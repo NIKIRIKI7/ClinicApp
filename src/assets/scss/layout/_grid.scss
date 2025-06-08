@@ -29,60 +29,10 @@
  *         (1 колонка на моб, 2 на планшете, 3 на десктопе, если сетка 12-колоночная)
  *
  * ===================================================================
-
-<!-- HTML с адаптивной сменой порядка блоков -->
-<section class="about-section">
-  <div class="container">
-    <!--
-      Используем 12-колоночную сетку для точного контроля.
-      На мобильных элементы будут просто идти друг за другом по умолчанию.
-    -->
-    <div class="grid grid--cols-12 grid--gap-lg grid--align-items-center">
-
-      <!-- Блок с текстом -->
-      <div class="grid__item
-                  grid__item--span-12
-                  grid__item--order-2
-                  grid__item--span-7-desktop
-                  grid__item--order-1-desktop">
-        <!--
-          Пояснения:
-          grid__item--span-12: На мобильных занимает всю ширину (12 колонок).
-          grid__item--order-2: На мобильных будет ВТОРЫМ элементом.
-
-          grid__item--span-7-desktop: На десктопе занимает 7 колонок.
-          grid__item--order-1-desktop: На десктопе становится ПЕРВЫМ.
-        -->
-        <div class="about__text">
-          <h2>О нашей компании</h2>
-          <p>Мы создаем лучшие решения для вашего бизнеса, используя передовые технологии и креативный подход.</p>
-        </div>
-      </div>
-
-      <!-- Блок с картинкой -->
-      <div class="grid__item
-                  grid__item--span-12
-                  grid__item--order-1
-                  grid__item--span-5-desktop
-                  grid__item--order-2-desktop">
-        <!--
-          Пояснения:
-          grid__item--order-1: На мобильных будет ПЕРВЫМ элементом.
-          grid__item--order-2-desktop: На десктопе становится ВТОРЫМ.
-        -->
-        <img src="path/to/your/image.jpg" alt="Наша команда работает над проектом">
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-
-
  */
 
 @use "sass:math";
+@use "sass:map";
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
@@ -138,6 +88,7 @@ $align-properties: (
   &--gap-md { gap: $grid-gap-md; }
   &--gap-lg { gap: $grid-gap-lg; }
   &--no-gap { gap: 0; }
+
   @each $key, $value in $align-properties {
     &--align-items-#{$key} { align-items: $value; }
   }
@@ -150,12 +101,15 @@ $align-properties: (
     &--span-#{$i} { grid-column: span $i; }
     &--start-#{$i} { grid-column-start: $i; }
   }
+
   @for $i from 1 through $grid-rows {
     &--row-span-#{$i} { grid-row: span $i; }
   }
+
   @for $i from 1 through $grid-order-levels {
     &--order-#{$i} { order: $i; }
   }
+
   @each $key, $value in $align-properties {
     &--align-self-#{$key} { align-self: $value; }
   }
@@ -167,12 +121,15 @@ $align-properties: (
         &--span-#{$i}-#{$bp-name} { grid-column: span $i; }
         &--start-#{$i}-#{$bp-name} { grid-column-start: $i; }
       }
+
       @for $i from 1 through $grid-rows {
         &--row-span-#{$i}-#{$bp-name} { grid-row: span $i; }
       }
+
       @for $i from 1 through $grid-order-levels {
         &--order-#{$i}-#{$bp-name} { order: $i; }
       }
+
       @each $key, $value in $align-properties {
         &--align-self-#{$key}-#{$bp-name} { align-self: $value; }
       }
