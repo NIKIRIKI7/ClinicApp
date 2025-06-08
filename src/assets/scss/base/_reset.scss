@@ -1,94 +1,65 @@
-* {
-  padding: 0px;
-  margin: 0px;
-  border: none;
-}
-
 *,
 *::before,
 *::after {
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-/* Links */
-
-a, a:link, a:visited  {
-  text-decoration: none;
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-a:hover  {
-  text-decoration: none;
+html,
+body {
+  height: 100%;
 }
 
-/* Common */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-aside, nav, footer, header, section, main {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
+  max-width: 100%;
 }
 
-h1, h2, h3, h4, h5, h6, p {
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-ul, ul li {
+ul,
+ol {
   list-style: none;
 }
 
-img {
-  vertical-align: top;
-}
-
-img, svg {
-  max-width: 100%;
-  height: auto;
-}
-
-address {
-  font-style: normal;
-}
-
-/* Form */
-
-input, textarea, button, select {
-  font-family: inherit;
-  font-size: inherit;
+input,
+button,
+textarea,
+select {
+  font: inherit;
   color: inherit;
-  background-color: transparent;
+}
+
+/* 8. Сброс стандартного вида кнопок */
+button {
+  cursor: pointer;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 input::-ms-clear {
   display: none;
 }
 
-button, input[type="submit"] {
-  display: inline-block;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background-color: transparent;
-  background: none;
-  cursor: pointer;
-}
-
-input:focus, input:active,
-button:focus, button:active {
-  outline: none;
-}
-
-button::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-
-label {
-  cursor: pointer;
-}
-
-legend {
-  display: block;
-}
-
-input[type='file'] {
-  max-width: 100%;
+/* 10. ВАЖНО: Улучшение доступности для :focus-visible
+* Позволяет браузеру самому решать, когда показывать обводку фокуса
+* (обычно при навигации с клавиатуры), но не при клике мышью.
+* Это лучшая альтернатива 'outline: none;'.
+*/
+:focus-visible {
+  outline: 2px solid #236B7A;
+  outline-offset: 2px;
 }
