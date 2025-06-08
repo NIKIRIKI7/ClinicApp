@@ -1,0 +1,181 @@
+/**
+ * ===================================================================
+ *                    ADVANCED ADAPTIVE GRID SYSTEM
+ * ===================================================================
+ * Методология: БЭМ
+ * Технология:   CSS Grid
+ * Подход:      Mobile First
+ *
+ * ===================================================================
+ *                        ШПАРГАЛКА ПО КЛАССАМ
+ * ===================================================================
+ *
+ * -- КОНТЕЙНЕР (.grid) --
+ * grid--cols-{1-12}            -> Задает кол-во колонок для простой сетки
+ * grid--gap-{sm|md|lg|no-gap}  -> Управляет отступами между элементами
+ * grid--align-items-{start|center|end|stretch} -> Выравнивает все элементы
+ *
+ * -- ЭЛЕМЕНТ (.grid__item) --
+ * grid__item--span-{1-12}      -> Элемент занимает {N} колонок
+ * grid__item--start-{1-12}     -> Элемент начинается с {N} колонки (отступ)
+ * grid__item--row-span-{1-6}   -> Элемент занимает {N} строк
+ * grid__item--order-{1-6}      -> Задает визуальный порядок элемента
+ * grid__item--align-self-*     -> Выравнивает один конкретный элемент
+ *
+ * -- АДАПТИВНЫЕ МОДИФИКАТОРЫ (добавляются к классам элемента) --
+ * ...--{правило}-{tablet|desktop}
+ *
+ * Пример: grid__item--span-12 grid__item--span-6-tablet grid__item--span-4-desktop
+ *         (1 колонка на моб, 2 на планшете, 3 на десктопе, если сетка 12-колоночная)
+ *
+ * ===================================================================
+
+<!-- HTML с адаптивной сменой порядка блоков -->
+<section class="about-section">
+  <div class="container">
+    <!--
+      Используем 12-колоночную сетку для точного контроля.
+      На мобильных элементы будут просто идти друг за другом по умолчанию.
+    -->
+    <div class="grid grid--cols-12 grid--gap-lg grid--align-items-center">
+
+      <!-- Блок с текстом -->
+      <div class="grid__item
+                  grid__item--span-12
+                  grid__item--order-2
+                  grid__item--span-7-desktop
+                  grid__item--order-1-desktop">
+        <!--
+          Пояснения:
+          grid__item--span-12: На мобильных занимает всю ширину (12 колонок).
+          grid__item--order-2: На мобильных будет ВТОРЫМ элементом.
+
+          grid__item--span-7-desktop: На десктопе занимает 7 колонок.
+          grid__item--order-1-desktop: На десктопе становится ПЕРВЫМ.
+        -->
+        <div class="about__text">
+          <h2>О нашей компании</h2>
+          <p>Мы создаем лучшие решения для вашего бизнеса, используя передовые технологии и креативный подход.</p>
+        </div>
+      </div>
+
+      <!-- Блок с картинкой -->
+      <div class="grid__item
+                  grid__item--span-12
+                  grid__item--order-1
+                  grid__item--span-5-desktop
+                  grid__item--order-2-desktop">
+        <!--
+          Пояснения:
+          grid__item--order-1: На мобильных будет ПЕРВЫМ элементом.
+          grid__item--order-2-desktop: На десктопе становится ВТОРЫМ.
+        -->
+        <img src="path/to/your/image.jpg" alt="Наша команда работает над проектом">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+ */
+
+@use "sass:math";
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --- Миксины, переменные и карты ---
+@mixin responsive-up($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+$grid-columns: 12;
+$grid-rows: 6;
+$grid-order-levels: 6;
+
+$grid-gap-sm: rem(15px);
+$grid-gap-md: rem(25px);
+$grid-gap-lg: rem(40px);
+
+$grid-breakpoints: (
+  "tablet": ($breakpoint-mobile + 1),
+  "desktop": ($breakpoint-tablet + 1),
+);
+
+$align-properties: (
+  "start": flex-start,
+  "center": center,
+  "end": flex-end,
+  "stretch": stretch,
+);
+
+// ==================== 1. БЛОК-КОНТЕЙНЕР: .grid ====================
+.grid {
+  display: grid;
+  width: 100%;
+  gap: $grid-gap-md;
+
+  // Модификаторы для ПРОСТЫХ сеток (применяются ко всему контейнеру)
+  @for $i from 1 through $grid-columns {
+    &--cols-#{$i} { grid-template-columns: repeat($i, 1fr); }
+  }
+
+  // Адаптивные модификаторы для ПРОСТЫХ сеток
+  @each $bp-name, $bp-value in $grid-breakpoints {
+    @include responsive-up($bp-value) {
+      @for $i from 1 through $grid-columns {
+        &--cols-#{$i}-#{$bp-name} { grid-template-columns: repeat($i, 1fr); }
+      }
+    }
+  }
+
+  // Модификаторы отступов и выравнивания
+  &--gap-sm { gap: $grid-gap-sm; }
+  &--gap-md { gap: $grid-gap-md; }
+  &--gap-lg { gap: $grid-gap-lg; }
+  &--no-gap { gap: 0; }
+  @each $key, $value in $align-properties {
+    &--align-items-#{$key} { align-items: $value; }
+  }
+}
+
+// ==================== 2. ЭЛЕМЕНТ СЕТКИ: .grid__item ====================
+.grid__item {
+  // Базовые стили (Mobile First)
+  @for $i from 1 through $grid-columns {
+    &--span-#{$i} { grid-column: span $i; }
+    &--start-#{$i} { grid-column-start: $i; }
+  }
+  @for $i from 1 through $grid-rows {
+    &--row-span-#{$i} { grid-row: span $i; }
+  }
+  @for $i from 1 through $grid-order-levels {
+    &--order-#{$i} { order: $i; }
+  }
+  @each $key, $value in $align-properties {
+    &--align-self-#{$key} { align-self: $value; }
+  }
+
+  // Генерация АДАПТИВНЫХ классов (для tablet и desktop)
+  @each $bp-name, $bp-value in $grid-breakpoints {
+    @include responsive-up($bp-value) {
+      @for $i from 1 through $grid-columns {
+        &--span-#{$i}-#{$bp-name} { grid-column: span $i; }
+        &--start-#{$i}-#{$bp-name} { grid-column-start: $i; }
+      }
+      @for $i from 1 through $grid-rows {
+        &--row-span-#{$i}-#{$bp-name} { grid-row: span $i; }
+      }
+      @for $i from 1 through $grid-order-levels {
+        &--order-#{$i}-#{$bp-name} { order: $i; }
+      }
+      @each $key, $value in $align-properties {
+        &--align-self-#{$key}-#{$bp-name} { align-self: $value; }
+      }
+    }
+  }
+}
