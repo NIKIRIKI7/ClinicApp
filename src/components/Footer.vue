@@ -1,12 +1,16 @@
-<script
-    setup
-    lang="ts"
->
-
+<script setup lang="ts">
+withDefaults(defineProps<{
+  theme?: 'dark' | 'light'
+}>(), {
+  theme: 'dark',
+});
 </script>
 
 <template>
-  <footer class="footer">
+  <footer
+      class="footer"
+      :class="`footer--${theme}`"
+  >
     <div class="container">
       <div class="footer__inner">
         <div class="footer__content">
@@ -28,18 +32,25 @@
 <style lang="scss" scoped>
 @use '../assets/scss/abstracts/variables' as *;
 @use '../assets/scss/abstracts/mixins' as *;
+
 .footer {
   padding: 70px 0 46px 0;
-  // --- ИЗМЕНЕНИЯ ЗДЕСЬ ---
-  background-color: $light-gray;      // Фон изменен на светлый
-  color: $primary-color;            // Цвет текста изменен на темный
-  // ----------------------
 
   @include responsive($breakpoint-tablet) {
     padding: 37px 0 41px 0;
   }
   @include responsive($breakpoint-mobile) {
     padding: 45px 0 41px 0;
+  }
+
+  &--dark {
+    background-color: $secondary-color;
+    color: $white;
+  }
+
+  &--light {
+    background-color: $light-gray;
+    color: $primary-color;
   }
 
   &__text {
