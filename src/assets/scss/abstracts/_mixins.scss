@@ -1,0 +1,58 @@
+@use "sass:math";
+@use "variables";
+
+// ===== 1. Миксин для центрирования (Flexbox) =====
+@mixin flex-center($direction: row) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+}
+
+// ===== 2. Миксин для адаптации =====
+@mixin responsive($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+// ===== 3. Миксин для стилей шрифта =====
+@mixin apply-font($family, $weight, $size) {
+  font-family: $family;
+  font-weight: $weight;
+  font-size: rem($size);
+}
+
+// ===== 4. Миксин для обрезки текста =====
+@mixin truncate-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+// ===== 5. Функция для конвертации в REM =====
+@function rem($pixels...) {
+  $base-font-size: variables.$font-size-base;
+  $base-unitless: math.div($base-font-size, 1px);
+  $rem-values: ();
+
+  @each $pixel in $pixels {
+    @if type-of($pixel) == 'number' {
+      $pixel-unitless: math.div($pixel, 1px);
+      $rem-values: append($rem-values, math.div($pixel-unitless, $base-unitless) * 1rem, space);
+    } @else {
+      $rem-values: append($rem-values, $pixel, space);
+    }
+  }
+
+  @return $rem-values;
+}
+
+// ===== 6. Функция для управления Z-индексами =====
+@function z($layer) {
+  @if not map-has-key(variables.$z-layers, $layer) {
+    @error "Слой '#{$layer}' не найден в карте $z-layers. Проверьте _variables.scss.";
+  }
+  @return map-get(variables.$z-layers, $layer);
+}
