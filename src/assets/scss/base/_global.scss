@@ -1,0 +1,52 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+body {
+  background-color: $white;
+  color: $text-color-dark;
+
+  // Устанавливаем основной шрифт для всего приложения
+  font-family: $font-family-primary;
+
+  // Улучшаем рендеринг шрифтов
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+// --- Типографика ---
+
+// Заголовки (h1, h2, h3)
+h1, h2, h3 {
+  color: $text-color-dark;
+}
+
+h1 {
+  @include apply-font($font-family-headings, $font-weight-medium, $h1-font-size);
+  line-height: 1.03;
+}
+
+h2 {
+  @include apply-font($font-family-primary, $font-weight-bold, 36px);
+}
+
+h3 {
+  @include apply-font($font-family-primary, $font-weight-bold, $font-size-display);
+}
+
+// Параграфы
+p {
+  @include apply-font($font-family-primary, $font-weight-medium, $font-size-base);
+  line-height: 1.03;
+}
+
+// --- Ссылки ---
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+
+  @include on-event {
+    color: $secondary-color;
+  }
+}
