@@ -1,12 +1,12 @@
 // Abstracts - Must be first
-@import 'abstracts/variables';
-@import 'abstracts/mixins';
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
 
 // Base
-@import 'base/reset';
-@import 'base/typography';
-@import 'base/global';
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/global';
 
 // Layout
-@import 'layout/container';
-@import 'layout/grid';
+@use 'layout/container';
+@use 'layout/grid';
