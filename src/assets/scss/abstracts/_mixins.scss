@@ -56,3 +56,8 @@
   }
   @return map-get(variables.$z-layers, $layer);
 }
+
+// ===== 7. Состояния (hover/focus) =====
+@mixin on-event {
+  &:hover, &:focus-visible { @content; }
+}
