@@ -34,7 +34,9 @@ withDefaults(defineProps<{
 @use '../assets/scss/abstracts/mixins' as *;
 
 .footer {
-  padding: 70px 0 46px 0;
+  &__inner {
+    padding: 70px 0 46px 0;
+  }
 
   @include responsive($breakpoint-tablet) {
     padding: 37px 0 41px 0;
