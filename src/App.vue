@@ -2,15 +2,11 @@
     setup
     lang="ts"
 >
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Licences from "@/components/Licences.vue";
+  import AboutUs from "@/views/AboutUs.vue";
 </script>
 
 <template>
-  <Header />
-  <Licences />
-  <Footer :theme="'dark'" />
+  <AboutUs />
 </template>
 
 <style scoped>

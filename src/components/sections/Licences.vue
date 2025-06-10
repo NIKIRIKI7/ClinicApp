@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useBreakpoints } from '@vueuse/core'; // 1. Импортируем useBreakpoints
-import { useContentStore } from '@/stores/content';
+import { useContentStore } from '@/stores/content.ts';
 
 import Button from '@/components/ui/Button.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
@@ -176,8 +176,8 @@ onUnmounted(() => {
     lang="scss"
     scoped
 >
-@use '../assets/scss/abstracts/variables' as *;
-@use '../assets/scss/abstracts/mixins' as *;
+@use '../../assets/scss/abstracts/variables' as *;
+@use '../../assets/scss/abstracts/mixins' as *;
 
 .licenses {
   padding: rem(80) 0;

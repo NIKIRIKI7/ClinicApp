@@ -85,8 +85,8 @@ const displayBreadcrumbs = computed<Breadcrumb[]>(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../assets/scss/abstracts/variables' as *;
-@use '../assets/scss/abstracts/mixins' as *;
+@use '../../assets/scss/abstracts/variables' as *;
+@use '../../assets/scss/abstracts/mixins' as *;
 
 .page-header {
   padding: rem(18) 0 rem(40);

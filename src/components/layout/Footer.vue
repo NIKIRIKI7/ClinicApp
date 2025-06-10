@@ -2,7 +2,7 @@
     setup
     lang="ts"
 >
-import {useContentStore} from '@/stores/content';
+import {useContentStore} from '@/stores/content.ts';
 
 interface Props {
   theme?: 'dark' | 'light'
@@ -40,8 +40,8 @@ const disclaimerText = contentStore.footer.disclaimer;
     lang="scss"
     scoped
 >
-@use '../assets/scss/abstracts/variables' as *;
-@use '../assets/scss/abstracts/mixins' as *;
+@use '../../assets/scss/abstracts/variables' as *;
+@use '../../assets/scss/abstracts/mixins' as *;
 
 .footer {
   &__inner {

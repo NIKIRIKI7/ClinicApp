@@ -2,7 +2,7 @@
     setup
     lang="ts"
 >
-import {useContentStore} from '@/stores/content'; // 1. Импортируем стор
+import {useContentStore} from '@/stores/content.ts'; // 1. Импортируем стор
 import TelegramIcon from '@/assets/icons/socials-icon--telegram.svg?component';
 import WhatsappIcon from '@/assets/icons/socials-icon--whatsapp.svg?component';
 import CalendarIcon from '@/assets/icons/data__icon.svg?component';
@@ -82,8 +82,8 @@ const {navItems, contacts} = contentStore.header;
     lang="scss"
     scoped
 >
-@use '../assets/scss/abstracts/variables' as *;
-@use '../assets/scss/abstracts/mixins' as *;
+@use '../../assets/scss/abstracts/variables' as *;
+@use '../../assets/scss/abstracts/mixins' as *;
 
 .header {
   &__inner {
