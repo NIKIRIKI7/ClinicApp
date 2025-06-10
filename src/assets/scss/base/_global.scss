@@ -22,8 +22,16 @@ h1, h2, h3 {
 }
 
 h1 {
-  @include apply-font($font-family-headings, $font-weight-medium, $h1-font-size);
+  @include apply-font($font-family-headings, $font-weight-medium, $h1-font-size-lg);
   line-height: 1.03;
+
+  @include responsive($breakpoint-tablet) {
+    font-size: rem($h1-font-size-md);
+  }
+
+  @include responsive($breakpoint-mobile) {
+    font-size: rem($h1-font-size-sm);
+  }
 }
 
 h2 {
