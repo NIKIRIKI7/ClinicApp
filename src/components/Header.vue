@@ -2,9 +2,13 @@
     setup
     lang="ts"
 >
+import {useContentStore} from '@/stores/content'; // 1. Импортируем стор
 import TelegramIcon from '@/assets/icons/socials-icon--telegram.svg?component';
 import WhatsappIcon from '@/assets/icons/socials-icon--whatsapp.svg?component';
 import CalendarIcon from '@/assets/icons/data__icon.svg?component';
+
+const contentStore = useContentStore();
+const {navItems, contacts} = contentStore.header;
 </script>
 
 <template>
@@ -17,30 +21,20 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
               aria-label="Основная навигация"
           >
             <ul class="header__nav-list">
-              <li class="header__nav-item">
+              <li
+                  v-for="item in navItems"
+                  :key="item.to"
+                  class="header__nav-item"
+              >
                 <router-link
-                    to="/about"
+                    :to="item.to"
                     class="header__nav-link"
-                >О НАС
-                </router-link>
-              </li>
-              <li class="header__nav-item">
-                <router-link
-                    to="/doctors"
-                    class="header__nav-link"
-                >НАШИ ВРАЧИ
-                </router-link>
-              </li>
-              <li class="header__nav-item">
-                <router-link
-                    to="/promotions"
-                    class="header__nav-link"
-                >АКЦИИ
+                >
+                  {{ item.text }}
                 </router-link>
               </li>
             </ul>
           </nav>
-
 
           <a
               href="#appointment-form"
@@ -54,21 +48,23 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
           </a>
 
           <div class="header__contacts">
+            <!-- 4. Динамически рендерим контакты из стора -->
             <a
-                href="tel:+79998887766"
+                :href="contacts.phone.href"
                 class="header__phone"
-            >+7 (999) 888-77-66
+            >
+              {{ contacts.phone.number }}
             </a>
             <div class="header__socials">
               <a
-                  href="#"
+                  :href="contacts.socials.telegram"
                   class="header__socials-link"
                   aria-label="Написать в Telegram"
               >
                 <TelegramIcon class="header__socials-icon" />
               </a>
               <a
-                  href="#"
+                  :href="contacts.socials.whatsapp"
                   class="header__socials-link"
                   aria-label="Написать в WhatsApp"
               >
@@ -77,10 +73,8 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
             </div>
           </div>
         </div>
-
       </div>
     </div>
-
   </header>
 </template>
 
@@ -93,10 +87,9 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
 
 .header {
   &__inner {
-    padding: 39px 0;
-
+    padding: rem(39) 0;
     @include responsive($breakpoint-tablet) {
-      padding: 25px 0;
+      padding: rem(25) 0;
     }
   }
 
@@ -104,14 +97,12 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     @include responsive($breakpoint-tablet) {
       flex-wrap: wrap;
-      row-gap: 16px;
+      row-gap: rem(16);
     }
   }
 
-  //-- 1. Навигация
   &__nav {
     @include responsive($breakpoint-tablet) {
       order: 3;
@@ -121,17 +112,15 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
 
   &__nav-list {
     display: flex;
-    gap: 45px;
-    font-size: rem($font-size-base);
-
+    gap: rem(45);
+    @include apply-font($font-family-primary, $font-weight-semibold, $font-size-base);
     @include responsive($breakpoint-tablet) {
-      gap: 24px;
+      gap: rem(24);
       justify-content: space-between;
       font-size: rem($font-size-md);
     }
-
     @include responsive($breakpoint-mobile) {
-      gap: 95px;
+      gap: rem(95);
       font-size: rem($font-size-sm);
     }
   }
@@ -139,57 +128,49 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
   &__nav-link {
     color: $text-color-dark;
     transition: color 0.3s ease;
-
     @include on-event {
       color: $secondary-color;
     }
   }
 
-  //-- 2. Кнопка записи
   &__button {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: rem($font-size-base);
-
+    gap: rem(4);
+    @include apply-font($font-family-primary, $font-weight-medium, $font-size-base);
     @include responsive($breakpoint-tablet) {
       order: 1;
-      gap: 5px;
+      gap: rem(5);
       font-size: rem($font-size-md);
     }
-
     @include responsive($breakpoint-mobile) {
-      gap: 4px;
+      gap: rem(4);
       font-size: rem($font-size-sm);
     }
   }
 
   &__button-icon {
-    width: 16px;
-    height: 16px;
+    width: rem(16);
+    height: rem(16);
     color: $secondary-color;
-
     @include responsive($breakpoint-mobile) {
-      width: 14px;
-      height: 14px;
+      width: rem(14);
+      height: rem(14);
     }
   }
 
-  //-- 3. Контакты
   &__contacts {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: rem($font-size-base);
-
+    gap: rem(10);
+    @include apply-font($font-family-primary, $font-weight-medium, $font-size-base);
     @include responsive($breakpoint-tablet) {
       order: 2;
-      gap: 13px;
+      gap: rem(13);
       font-size: rem($font-size-md);
     }
-
     @include responsive($breakpoint-mobile) {
-      gap: 8px;
+      gap: rem(8);
       font-size: rem($font-size-sm);
     }
   }
@@ -197,7 +178,6 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
   &__phone {
     color: $text-color-dark;
     transition: color 0.3s ease;
-
     @include on-event {
       color: $secondary-color;
     }
@@ -205,35 +185,30 @@ import CalendarIcon from '@/assets/icons/data__icon.svg?component';
 
   &__socials {
     display: flex;
-    gap: 5px;
-
+    gap: rem(5);
     @include responsive($breakpoint-tablet) {
-      gap: 10px;
+      gap: rem(10);
     }
-
     @include responsive($breakpoint-mobile) {
-      gap: 5px;
+      gap: rem(5);
     }
   }
 
   &__socials-icon {
-    width: 30px;
-    height: 30px;
-    transition: filter 0.3s ease, scale 0.3s ease;
-
+    width: rem(30);
+    height: rem(30);
+    transition: filter 0.3s ease, transform 0.3s ease;
     @include on-event {
       filter: hue-rotate(30deg) brightness(1.1);
-      scale: 1.1;
+      transform: scale(1.1);
     }
-
     @include responsive($breakpoint-tablet) {
-      width: 27px;
-      height: 27px;
+      width: rem(27);
+      height: rem(27);
     }
-
     @include responsive($breakpoint-mobile) {
-      width: 20px;
-      height: 20px;
+      width: rem(20);
+      height: rem(20);
     }
   }
 }

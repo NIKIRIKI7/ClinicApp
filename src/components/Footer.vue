@@ -1,9 +1,21 @@
-<script setup lang="ts">
-withDefaults(defineProps<{
+<script
+    setup
+    lang="ts"
+>
+import {useContentStore} from '@/stores/content';
+
+interface Props {
   theme?: 'dark' | 'light'
-}>(), {
+}
+
+withDefaults(defineProps<Props>(), {
   theme: 'dark',
 });
+
+const contentStore = useContentStore();
+
+const copyrightText = contentStore.fullCopyright;
+const disclaimerText = contentStore.footer.disclaimer;
 </script>
 
 <template>
@@ -15,13 +27,8 @@ withDefaults(defineProps<{
       <div class="footer__inner">
         <div class="footer__content">
           <div class="footer__text">
-            <p class="footer__disclaimer">
-              ИМЕЮТСЯ ПРОТИВОПОКАЗАНИЯ.<br>
-              НЕОБХОДИМА КОНСУЛЬТАЦИЯ СПЕЦИАЛИСТА
-            </p>
-            <p class="footer__copyright">
-              © 2025 ООО «ГК РТ-Клиника» ИНН 1102334455
-            </p>
+            <p class="footer__disclaimer">{{ disclaimerText }}</p>
+            <p class="footer__copyright">{{ copyrightText }}</p>
           </div>
         </div>
       </div>
@@ -29,25 +36,27 @@ withDefaults(defineProps<{
   </footer>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../assets/scss/abstracts/variables' as *;
 @use '../assets/scss/abstracts/mixins' as *;
 
 .footer {
   &__inner {
-    padding: 70px 0 46px 0;
-  }
-
-  @include responsive($breakpoint-tablet) {
-    padding: 37px 0 41px 0;
-  }
-  @include responsive($breakpoint-mobile) {
-    padding: 45px 0 41px 0;
+    padding: rem(70) 0 rem(46);
+    @include responsive($breakpoint-tablet) {
+      padding: rem(37) 0 rem(41);
+    }
+    @include responsive($breakpoint-mobile) {
+      padding: rem(45) 0 rem(41);
+    }
   }
 
   &--dark {
     background-color: $secondary-color;
-    color: $white;
+    color: $text-color-light;
   }
 
   &--light {
@@ -57,29 +66,28 @@ withDefaults(defineProps<{
 
   &__text {
     display: grid;
-    gap: 4px;
-
+    gap: rem(4);
     @include responsive($breakpoint-tablet) {
-      gap: 13px;
+      gap: rem(13);
     }
     @include responsive($breakpoint-mobile) {
-      gap: 2px;
+      gap: rem(2);
     }
   }
 
   &__disclaimer {
-    letter-spacing: 5px;
-
+    @include apply-font($font-family-primary, $font-weight-medium, $font-size-base);
+    letter-spacing: rem(5);
+    white-space: pre-line;
     @include responsive($breakpoint-mobile) {
-      font-size: rem(10px);
+      font-size: rem(10);
     }
   }
 
   &__copyright {
-    font-size: rem($font-size-sm);
-
+    @include apply-font($font-family-primary, $font-weight-medium, $font-size-sm);
     @include responsive($breakpoint-mobile) {
-      font-size: rem(8px);
+      font-size: rem($font-size-xs);
     }
   }
 }

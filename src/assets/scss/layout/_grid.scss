@@ -71,26 +71,43 @@ $align-properties: (
 
   // Модификаторы для ПРОСТЫХ сеток (применяются ко всему контейнеру)
   @for $i from 1 through $grid-columns {
-    &--cols-#{$i} { grid-template-columns: repeat($i, 1fr); }
+    &--cols-#{$i} {
+      grid-template-columns: repeat($i, 1fr);
+    }
   }
 
   // Адаптивные модификаторы для ПРОСТЫХ сеток
   @each $bp-name, $bp-value in $grid-breakpoints {
     @include responsive-up($bp-value) {
       @for $i from 1 through $grid-columns {
-        &--cols-#{$i}-#{$bp-name} { grid-template-columns: repeat($i, 1fr); }
+        &--cols-#{$i}-#{$bp-name} {
+          grid-template-columns: repeat($i, 1fr);
+        }
       }
     }
   }
 
   // Модификаторы отступов и выравнивания
-  &--gap-sm { gap: $grid-gap-sm; }
-  &--gap-md { gap: $grid-gap-md; }
-  &--gap-lg { gap: $grid-gap-lg; }
-  &--no-gap { gap: 0; }
+  &--gap-sm {
+    gap: $grid-gap-sm;
+  }
+
+  &--gap-md {
+    gap: $grid-gap-md;
+  }
+
+  &--gap-lg {
+    gap: $grid-gap-lg;
+  }
+
+  &--no-gap {
+    gap: 0;
+  }
 
   @each $key, $value in $align-properties {
-    &--align-items-#{$key} { align-items: $value; }
+    &--align-items-#{$key} {
+      align-items: $value;
+    }
   }
 }
 
@@ -98,40 +115,60 @@ $align-properties: (
 .grid__item {
   // Базовые стили (Mobile First)
   @for $i from 1 through $grid-columns {
-    &--span-#{$i} { grid-column: span $i; }
-    &--start-#{$i} { grid-column-start: $i; }
+    &--span-#{$i} {
+      grid-column: span $i;
+    }
+    &--start-#{$i} {
+      grid-column-start: $i;
+    }
   }
 
   @for $i from 1 through $grid-rows {
-    &--row-span-#{$i} { grid-row: span $i; }
+    &--row-span-#{$i} {
+      grid-row: span $i;
+    }
   }
 
   @for $i from 1 through $grid-order-levels {
-    &--order-#{$i} { order: $i; }
+    &--order-#{$i} {
+      order: $i;
+    }
   }
 
   @each $key, $value in $align-properties {
-    &--align-self-#{$key} { align-self: $value; }
+    &--align-self-#{$key} {
+      align-self: $value;
+    }
   }
 
   // Генерация АДАПТИВНЫХ классов (для tablet и desktop)
   @each $bp-name, $bp-value in $grid-breakpoints {
     @include responsive-up($bp-value) {
       @for $i from 1 through $grid-columns {
-        &--span-#{$i}-#{$bp-name} { grid-column: span $i; }
-        &--start-#{$i}-#{$bp-name} { grid-column-start: $i; }
+        &--span-#{$i}-#{$bp-name} {
+          grid-column: span $i;
+        }
+        &--start-#{$i}-#{$bp-name} {
+          grid-column-start: $i;
+        }
       }
 
       @for $i from 1 through $grid-rows {
-        &--row-span-#{$i}-#{$bp-name} { grid-row: span $i; }
+        &--row-span-#{$i}-#{$bp-name} {
+          grid-row: span $i;
+        }
       }
 
       @for $i from 1 through $grid-order-levels {
-        &--order-#{$i}-#{$bp-name} { order: $i; }
+        &--order-#{$i}-#{$bp-name} {
+          order: $i;
+        }
       }
 
       @each $key, $value in $align-properties {
-        &--align-self-#{$key}-#{$bp-name} { align-self: $value; }
+        &--align-self-#{$key}-#{$bp-name} {
+          align-self: $value;
+        }
       }
     }
   }

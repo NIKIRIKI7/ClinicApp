@@ -1,6 +1,7 @@
 @use "sass:math";
 @use "sass:meta";
 @use "sass:list";
+@use "sass:map";
 @use "variables";
 
 // ===== 1. Миксин для центрирования (Flexbox) =====
@@ -32,33 +33,50 @@
   text-overflow: ellipsis;
 }
 
-// ===== 5. Функция для конвертации в REM =====
+// ===== 5. Функция для конвертации в REM (ИСПРАВЛЕНА) =====
 @function rem($pixels...) {
   $base-font-size: variables.$font-size-base;
+  // Получаем базовый размер шрифта как чистое число
   $base-unitless: math.div($base-font-size, 1px);
   $rem-values: ();
 
-  @each $pixel in $pixels {
-    @if meta.type-of($pixel) == 'number' {
-      $pixel-unitless: math.div($pixel, 1px);
+  @each $pixel-value in $pixels {
+    // Проверяем, что это число, а не строка типа "auto"
+    @if meta.type-of($pixel-value) == 'number' {
+      $pixel-unitless: $pixel-value;
+
+      // Если у числа есть единица измерения (например, 16px), убираем ее.
+      // Используем современную функцию math.is-unitless().
+      @if not math.is-unitless($pixel-unitless) {
+        $pixel-unitless: math.div($pixel-value, 1px);
+      }
+
+      // Теперь, когда у нас гарантированно чистое число, выполняем расчет
       $rem-values: list.append($rem-values, math.div($pixel-unitless, $base-unitless) * 1rem, space);
+
     } @else {
-      $rem-values: list.append($rem-values, $pixel, space);
+      // Если это не число (например, 'auto'), оставляем как есть
+      $rem-values: list.append($rem-values, $pixel-value, space);
     }
   }
 
   @return $rem-values;
 }
 
-// ===== 6. Функция для управления Z-индексами =====
+
+// ===== 6. Функция для управления Z-индексами (исправлена) =====
 @function z($layer) {
-  @if not map-has-key(variables.$z-layers, $layer) {
+  // Используем современную функцию map.has-key()
+  @if not map.has-key(variables.$z-layers, $layer) {
     @error "Слой '#{$layer}' не найден в карте $z-layers. Проверьте _variables.scss.";
   }
-  @return map-get(variables.$z-layers, $layer);
+  // Используем современную функцию map.get()
+  @return map.get(variables.$z-layers, $layer);
 }
 
 // ===== 7. Состояния (hover/focus) =====
 @mixin on-event {
-  &:hover, &:focus-visible { @content; }
+  &:hover, &:focus-visible {
+    @content;
+  }
 }

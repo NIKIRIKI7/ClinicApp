@@ -27,7 +27,7 @@ h1 {
 }
 
 h2 {
-  @include apply-font($font-family-primary, $font-weight-bold, 36px);
+  @include apply-font($font-family-headings, $font-weight-semibold, 36px);
 }
 
 h3 {
