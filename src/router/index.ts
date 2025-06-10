@@ -1,4 +1,10 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router';
+import type {RouteLocationRaw} from 'vue-router';
+
+interface Breadcrumb {
+  text: string;
+  to?: RouteLocationRaw;
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,27 +12,49 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      // Применяем ленивую загрузку и для главной страницы
       component: () => import('@/views/Main.vue'),
+      meta: {
+        title: 'О КЛИНИКЕ',
+        breadcrumbs: [{text: 'Главная'}] as Breadcrumb[],
+      },
     },
     {
-      // Используем kebab-case для URL
       path: '/doctors',
       name: 'ourDoctors',
       component: () => import('../views/OurDoctors.vue'),
+      meta: {
+        title: 'НАШИ ВРАЧИ',
+        breadcrumbs: [
+          {text: 'Главная', to: '/'},
+          {text: 'Наши врачи'},
+        ] as Breadcrumb[],
+      }
     },
     {
       path: '/promotions',
       name: 'promotions',
       component: () => import('../views/Promotions.vue'),
+      meta: {
+        title: 'АКЦИИ',
+        breadcrumbs: [
+          {text: 'Главная', to: '/'},
+          {text: 'Акции'},
+        ] as Breadcrumb[],
+      }
     },
     {
-      // Используем kebab-case для URL
       path: '/about',
       name: 'aboutUs',
       component: () => import('../views/AboutUs.vue'),
-    },
+      meta: {
+        title: 'О КЛИНИКЕ',
+        breadcrumbs: [
+          {text: 'Главная', to: '/'},
+          {text: 'О нас'},
+        ] as Breadcrumb[],
+      }
+    }
   ],
-})
+});
 
-export default router
+export default router;
