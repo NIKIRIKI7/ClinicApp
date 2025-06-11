@@ -14,7 +14,7 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/views/Main.vue'),
       meta: {
-        title: 'О КЛИНИКЕ',
+        title: '',
         breadcrumbs: [{text: 'Главная'}] as Breadcrumb[],
       },
     },
