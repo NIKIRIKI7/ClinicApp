@@ -9,10 +9,8 @@ import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
 const contentStore = useContentStore();
-// storeToRefs здесь важен, чтобы licenses оставался реактивным
 const { licenses } = storeToRefs(contentStore);
 
-// Вызываем наш Composable, передавая ему данные и уникальную конфигурацию
 const {
   visibleItems: visibleLicenses,
   isPrevDisabled,
@@ -25,7 +23,7 @@ const {
   closeModal,
 } = useSlider(licenses, {
   itemsPerPage: { MOBILE: 2, TABLET: 3, DESKTOP: 4 },
-  breakpoints: { MOBILE: 400, TABLET: 834 },
+  breakpoints: { MOBILE: 426, TABLET: 834 }, // Используем брейкпоинт, который соответствует макету
 });
 </script>
 
@@ -65,7 +63,9 @@ const {
             <arrowRight class="licenses__arrow" aria-hidden="true" />
           </button>
         </div>
-        <Button href="#">ПЕРЕЙТИ В РАЗДЕЛ «ПРАВОВАЯ ИНФОРМАЦИЯ»</Button>
+        <Button href="#" class="licenses__button">
+          ПЕРЕЙТИ В РАЗДЕЛ «ПРАВОВАЯ ИНФОРМАЦИЯ»
+        </Button>
       </div>
     </div>
     <AppModal :is-open="isModalOpen" :item="selectedLicense" @close="closeModal" />
@@ -100,10 +100,19 @@ const {
   padding: rem(33) rem(40);
   gap: rem(20);
   box-shadow: 0 rem(4) rem(25) rgba(0, 0, 0, 0.07);
+
+  @include responsive($breakpoint-tablet) {
+    padding: rem(41) rem(43);
+  }
+  @include responsive($breakpoint-mobile) {
+    padding: rem(10);
+    gap: rem(10);
+  }
 }
 .licenses__viewport {
   overflow: hidden;
   flex-grow: 1;
+  min-width: 0;
 }
 .licenses__list {
   display: flex;
@@ -112,8 +121,19 @@ const {
   list-style: none;
   padding: 0;
   margin: 0;
+
+  @include responsive($breakpoint-desktop) {
+    gap: rem(30);
+  }
+  @include responsive($breakpoint-tablet) {
+    gap: rem(20);
+  }
+  @include responsive($breakpoint-mobile) {
+    gap: rem(15);
+  }
 }
 .licenses__item-button {
+  display: block;
   background: none;
   border: none;
   padding: 0;
@@ -131,6 +151,13 @@ const {
   object-fit: cover;
   width: rem(144);
   border-radius: rem(8);
+
+  @include responsive($breakpoint-tablet) {
+    width: rem(130);
+  }
+  @include responsive($breakpoint-mobile) {
+    width: rem(120);
+  }
 }
 .licenses__nav-button {
   @include flex-center;
@@ -150,8 +177,25 @@ const {
     opacity: 0.5;
     cursor: not-allowed;
   }
+  @include responsive($breakpoint-tablet) {
+    width: rem(53);
+    height: rem(53);
+  }
+  @include responsive($breakpoint-mobile) {
+    width: rem(40);
+    height: rem(40);
+  }
 }
 .licenses__arrow {
   width: rem(24);
+  @include responsive($breakpoint-mobile) {
+    width: rem(16);
+  }
+}
+.licenses__button {
+  @include responsive($breakpoint-mobile) {
+    font-size: rem(12px);
+    padding: rem(12) rem(16);
+  }
 }
 </style>

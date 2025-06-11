@@ -40,12 +40,21 @@ h2 {
 
 h3 {
   @include apply-font($font-family-primary, $font-weight-bold, $font-size-display);
+  line-height: 1;
+
+  @include responsive($breakpoint-mobile) {
+    font-size: rem(20px);
+    line-height: 1;
+  }
 }
 
 // Параграфы
 p {
-  @include apply-font($font-family-primary, $font-weight-medium, $font-size-base);
-  line-height: 1.03;
+  @include apply-font($font-family-primary, $font-weight-medium, rem(24px));
+
+  @include responsive($breakpoint-mobile) {
+    font-size: rem($font-size-md);
+  }
 }
 
 // --- Ссылки ---

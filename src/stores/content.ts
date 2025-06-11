@@ -15,8 +15,10 @@ import galleryImage2 from '@/assets/images/gallery__item2.png';
 import galleryImage3 from '@/assets/images/gallery__item3.png';
 import galleryImage4 from '@/assets/images/gallery__item4.png';
 
+// 3. Изображения для секции "Наши преимущества"
+import blobImage from '@/assets/images/blob.png';
 
-// 3. Иконки для навигационной сетки (импортируются как компоненты Vue)
+// 4. Иконки для навигационной сетки (импортируются как компоненты Vue)
 import IconNews from '@/assets/icons/news__icon.svg?component';
 import IconTech from '@/assets/icons/tech__icon.svg?component';
 import IconReviews from '@/assets/icons/reviews__icon.svg?component';
@@ -60,6 +62,19 @@ export interface SectionGridItemData {
   text: string;
   to: string;
   icon: Component;
+}
+
+export interface AdvantagesData {
+  title: string;
+  blob: {
+    src: string;
+    alt: string;
+  };
+  items: {
+    id: number;
+    title: string;
+    description: string;
+  }[];
 }
 
 /**
@@ -115,6 +130,26 @@ export const useContentStore = defineStore('content', {
       copyrightBase: 'ООО «ГК РТ-Клиника» ИНН 1102334455',
       disclaimer: 'ИМЕЮТСЯ ПРОТИВОПОКАЗАНИЯ.\nНЕОБХОДИМА КОНСУЛЬТАЦИЯ СПЕЦИАЛИСТА',
     },
+
+    advantages: {
+      title: 'Наши преимущества',
+      blob: {
+        src: blobImage,
+        alt: 'Декоративный фоновый элемент',
+      },
+      items: [
+        {
+          id: 1,
+          title: 'Команда профессионалов',
+          description: 'На сегодняшний момент в нашем штате более 100 специалистов, в том числе кандидаты медицинских наук и врачи с международными сертификатами: стоматологи-терапевты, пародонтологи, хирурги-имплантологи, гнатологи, стоматологи-ортопеды и ортодонты. Отделения нашей стоматологии располагают также собственной зуботехнической лабораторией, среди сотрудников которой 10 квалифицированных зубных техников.',
+        },
+        {
+          id: 2,
+          title: 'Передовые технологии и оборудование',
+          description: 'Высокотехнологичное оснащение отделений стоматологии позволяет выполнять качественную диагностику и стоматологические процедуры различного уровня сложности:<br>• компьютерные томографы Vatech и Galileos;<br>• микроскопы Leica;<br>• имплантологические системы ведущих мировых брендов;<br>• рентген-аппарат нового поколения;<br>• аппараты для профессионального отбеливания зубов ZOOM4, ZOOM3, Blanche Brillante;<br>• компьютерная анестезия;<br>• компьютерная диагностика тканей пародонта.',
+        },
+      ],
+    } as AdvantagesData,
   }),
 
   getters: {

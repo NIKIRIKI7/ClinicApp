@@ -28,6 +28,7 @@ const {
   breakpoints: {MOBILE: 426, TABLET: 834},
 });
 </script>
+
 <template>
   <section class="gallery">
     <div class="container">
@@ -87,10 +88,13 @@ const {
     />
   </section>
 </template>
+
 <style
     lang="scss"
     scoped
 >
+// ИСПРАВЛЕНИЕ 1: Импортируем встроенный модуль sass:color
+@use 'sass:color';
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 
@@ -168,7 +172,8 @@ const {
 
   &:not(:disabled):hover {
     transform: scale(1.05);
-    background-color: darken($accent-color, 8%);
+    // ИСПРАВЛЕНИЕ 2: Заменяем darken() на color.adjust()
+    background-color: color.adjust($accent-color, $lightness: -8%);
   }
 
   &:disabled {
