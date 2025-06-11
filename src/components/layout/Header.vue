@@ -1,14 +1,14 @@
-<script
-    setup
-    lang="ts"
->
-import {useContentStore} from '@/stores/content.ts'; // 1. Импортируем стор
+// src/components/Header.vue
+
+<script setup lang="ts">
+import { useContentStore } from '@/stores/content';
+import { storeToRefs } from 'pinia';
 import TelegramIcon from '@/assets/icons/socials-icon--telegram.svg?component';
 import WhatsappIcon from '@/assets/icons/socials-icon--whatsapp.svg?component';
 import CalendarIcon from '@/assets/icons/data__icon.svg?component';
 
 const contentStore = useContentStore();
-const {navItems, contacts} = contentStore.header;
+const { header } = storeToRefs(contentStore);
 </script>
 
 <template>
@@ -22,7 +22,7 @@ const {navItems, contacts} = contentStore.header;
           >
             <ul class="header__nav-list">
               <li
-                  v-for="item in navItems"
+                  v-for="item in header.navItems"
                   :key="item.to"
                   class="header__nav-item"
               >
@@ -48,23 +48,22 @@ const {navItems, contacts} = contentStore.header;
           </a>
 
           <div class="header__contacts">
-            <!-- 4. Динамически рендерим контакты из стора -->
             <a
-                :href="contacts.phone.href"
+                :href="header.contacts.phone.href"
                 class="header__phone"
             >
-              {{ contacts.phone.number }}
+              {{ header.contacts.phone.number }}
             </a>
             <div class="header__socials">
               <a
-                  :href="contacts.socials.telegram"
+                  :href="header.contacts.socials.telegram"
                   class="header__socials-link"
                   aria-label="Написать в Telegram"
               >
                 <TelegramIcon class="header__socials-icon" />
               </a>
               <a
-                  :href="contacts.socials.whatsapp"
+                  :href="header.contacts.socials.whatsapp"
                   class="header__socials-link"
                   aria-label="Написать в WhatsApp"
               >
