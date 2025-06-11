@@ -2,14 +2,21 @@ import { defineStore } from 'pinia';
 import type { Component } from 'vue';
 
 // --- АССЕТЫ ---
-// Импортируем изображения для секции "Лицензии"
+
+// 1. Изображения для секции "Лицензии"
 import licenseImage1 from '@/assets/images/license-1.png';
 import licenseImage2 from '@/assets/images/license-2.png';
 import licenseImage3 from '@/assets/images/license-3.png';
 import licenseImage4 from '@/assets/images/license-4.png';
 
-// Импортируем компоненты иконок для навигационной сетки.
-// Предполагается, что эти файлы созданы в указанной директории.
+// 2. Изображения для секции "Галерея"
+import galleryImage1 from '@/assets/images/gallery__item1.png';
+import galleryImage2 from '@/assets/images/gallery__item2.png';
+import galleryImage3 from '@/assets/images/gallery__item3.png';
+import galleryImage4 from '@/assets/images/gallery__item4.png';
+
+
+// 3. Иконки для навигационной сетки (импортируются как компоненты Vue)
 import IconNews from '@/assets/icons/news__icon.svg?component';
 import IconTech from '@/assets/icons/tech__icon.svg?component';
 import IconReviews from '@/assets/icons/reviews__icon.svg?component';
@@ -20,23 +27,11 @@ import IconData from '@/assets/icons/processing__icon.svg?component';
 
 // --- ИНТЕРФЕЙСЫ ТИПОВ ---
 
-/**
- * @interface NavItem
- * @description Описывает структуру элемента навигации в шапке сайта.
- * @property {string} to - Путь для vue-router.
- * @property {string} text - Отображаемый текст ссылки.
- */
 export interface NavItem {
   to: string;
   text: string;
 }
 
-/**
- * @interface Contacts
- * @description Описывает структуру контактных данных.
- * @property phone - Телефонный номер и ссылка для него.
- * @property socials - Ссылки на социальные сети.
- */
 export interface Contacts {
   phone: {
     number: string;
@@ -48,27 +43,18 @@ export interface Contacts {
   };
 }
 
-/**
- * @interface License
- * @description Описывает структуру лицензии.
- * @property {number} id - Уникальный идентификатор.
- * @property {string} src - Путь к изображению лицензии.
- * @property {string} alt - Альтернативный текст для изображения.
- */
 export interface License {
   id: number;
   src: string;
   alt: string;
 }
 
-/**
- * @interface SectionGridItemData
- * @description Описывает структуру элемента навигационной сетки.
- * @property {number} id - Уникальный идентификатор.
- * @property {string} text - Отображаемый текст.
- * @property {string} to - Путь для vue-router.
- * @property {Component} icon - Vue-компонент иконки.
- */
+export interface GalleryImage {
+  id: number;
+  src: string;
+  alt: string;
+}
+
 export interface SectionGridItemData {
   id: number;
   text: string;
@@ -82,9 +68,6 @@ export interface SectionGridItemData {
  */
 export const useContentStore = defineStore('content', {
   state: () => ({
-    /**
-     * Данные для шапки сайта (header).
-     */
     header: {
       navItems: [
         { to: '/about', text: 'О НАС' },
@@ -97,15 +80,12 @@ export const useContentStore = defineStore('content', {
           href: 'tel:+79998887766',
         },
         socials: {
-          telegram: '#', // Заменить на реальную ссылку
-          whatsapp: '#', // Заменить на реальную ссылку
+          telegram: '#',
+          whatsapp: '#',
         },
       } as Contacts,
     },
 
-    /**
-     * Данные для элементов навигационной сетки на главной странице.
-     */
     sectionGridItems: [
       { id: 1, text: 'НОВОСТИ', to: '/news', icon: IconNews },
       { id: 2, text: 'ТЕХНОЛОГИИ И ОБОРУДОВАНИЕ', to: '/technologies', icon: IconTech },
@@ -115,32 +95,29 @@ export const useContentStore = defineStore('content', {
       { id: 6, text: 'ОБРАБОТКА ПЕРСОНАЛЬНЫХ ДАННЫХ', to: '/personal-data', icon: IconData },
     ] as SectionGridItemData[],
 
-    /**
-     * Данные для слайдера с лицензиями.
-     */
     licenses: [
       { id: 1, src: licenseImage1, alt: 'Лицензия 1' },
       { id: 2, src: licenseImage2, alt: 'Лицензия 2' },
       { id: 3, src: licenseImage3, alt: 'Лицензия 3' },
       { id: 4, src: licenseImage4, alt: 'Лицензия 4' },
-      { id: 5, src: licenseImage4, alt: 'Лицензия 5' }, // Пример с дубликатом для заполнения
+      { id: 5, src: licenseImage4, alt: 'Лицензия 5' },
     ] as License[],
 
-    /**
-     * Данные для подвала сайта (footer).
-     */
+    galleryImages: [
+      { id: 1, src: galleryImage1, alt: 'Интерьер клиники: стоматологическое кресло' },
+      { id: 2, src: galleryImage2, alt: 'Интерьер клиники: рабочее место специалиста' },
+      { id: 3, src: galleryImage3, alt: 'Интерьер клиники: процедурный кабинет' },
+      { id: 4, src: galleryImage4, alt: 'Интерьер клиники: зона ожидания' },
+      { id: 5, src: galleryImage1, alt: 'Интерьер клиники: вид сверху на кресло' },
+    ] as GalleryImage[],
+
     footer: {
       copyrightBase: 'ООО «ГК РТ-Клиника» ИНН 1102334455',
-      // Используем \n для переноса. Стилизуем через white-space: pre-line в CSS.
       disclaimer: 'ИМЕЮТСЯ ПРОТИВОПОКАЗАНИЯ.\nНЕОБХОДИМА КОНСУЛЬТАЦИЯ СПЕЦИАЛИСТА',
     },
   }),
 
   getters: {
-    /**
-     * Формирует полную строку с авторскими правами, включая текущий год.
-     * @returns {string} Например: "© 2024 ООО «ГК РТ-Клиника» ИНН 1102334455"
-     */
     fullCopyright(state): string {
       const currentYear = new Date().getFullYear();
       return `© ${currentYear} ${state.footer.copyrightBase}`;

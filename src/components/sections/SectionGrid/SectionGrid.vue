@@ -1,16 +1,11 @@
-<script
-    setup
-    lang="ts"
->
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import SectionGridItem from './SectionGridItem.vue';
 import { useContentStore } from '@/stores/content';
 
-/**
- * @component SectionGrid
- * @description Контейнер для отображения навигационной сетки.
- */
 const contentStore = useContentStore();
-const gridItems = contentStore.sectionGridItems;
+
+const { sectionGridItems: gridItems } = storeToRefs(contentStore);
 </script>
 
 <template>

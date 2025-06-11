@@ -54,7 +54,6 @@ defineProps({
     margin-right: rem(16);
 
     @include responsive($breakpoint-mobile) {
-      // Убираем боковой отступ и добавляем нижний
       margin-right: 0;
     }
   }
