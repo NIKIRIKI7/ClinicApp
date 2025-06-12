@@ -1,6 +1,9 @@
-<script setup lang="ts">
-import type { PropType } from 'vue';
-import type { SectionGridItemData } from '@/stores/content';
+<script
+    setup
+    lang="ts"
+>
+import type {PropType} from 'vue';
+import type {SectionGridItemData} from '@/stores/sectionGrid';
 
 /**
  * @component SectionGridItem
@@ -27,7 +30,10 @@ defineProps({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../../../assets/scss/abstracts/variables' as *;
 @use '../../../assets/scss/abstracts/mixins' as *;
 
@@ -40,7 +46,6 @@ defineProps({
   padding: rem(10, 24);
   box-shadow: 0 rem(4) rem(15) rgba(0, 0, 0, 0.05);
   height: rem(90);
-
   @include responsive($breakpoint-tablet) {
     height: rem(85);
     padding: rem(10, 18);
@@ -52,7 +57,6 @@ defineProps({
     text-transform: uppercase;
     line-height: 1.3;
     margin-right: rem(16);
-
     @include responsive($breakpoint-mobile) {
       margin-right: 0;
     }
@@ -65,7 +69,6 @@ defineProps({
     height: rem(60);
     background-color: $accent-color;
     border-radius: rem(14);
-
     @include responsive($breakpoint-mobile) {
       margin-left: 0;
     }

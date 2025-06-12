@@ -1,8 +1,9 @@
+<!-- src/components/layout/Footer.vue -->
 <script
     setup
     lang="ts"
 >
-import {useContentStore} from '@/stores/content.ts';
+import {useLayoutStore} from '@/stores/layout';
 
 interface Props {
   theme?: 'dark' | 'light'
@@ -12,10 +13,8 @@ withDefaults(defineProps<Props>(), {
   theme: 'dark',
 });
 
-const contentStore = useContentStore();
+const layoutStore = useLayoutStore();
 
-const copyrightText = contentStore.fullCopyright;
-const disclaimerText = contentStore.footer.disclaimer;
 </script>
 
 <template>
@@ -27,8 +26,8 @@ const disclaimerText = contentStore.footer.disclaimer;
       <div class="footer__inner">
         <div class="footer__content">
           <div class="footer__text">
-            <p class="footer__disclaimer">{{ disclaimerText }}</p>
-            <p class="footer__copyright">{{ copyrightText }}</p>
+            <p class="footer__disclaimer">{{ layoutStore.footer.disclaimer }}</p>
+            <p class="footer__copyright">{{ layoutStore.fullCopyright }}</p>
           </div>
         </div>
       </div>

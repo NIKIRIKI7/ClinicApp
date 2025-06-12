@@ -1,11 +1,13 @@
-<script setup lang="ts">
-import { storeToRefs } from 'pinia';
+<script
+    setup
+    lang="ts"
+>
+import {storeToRefs} from 'pinia';
 import SectionGridItem from './SectionGridItem.vue';
-import { useContentStore } from '@/stores/content';
+import {useSectionGridStore} from '@/stores/sectionGrid';
 
-const contentStore = useContentStore();
-
-const { sectionGridItems: gridItems } = storeToRefs(contentStore);
+const sectionGridStore = useSectionGridStore();
+const {sectionGridItems: gridItems} = storeToRefs(sectionGridStore);
 </script>
 
 <template>
@@ -24,14 +26,16 @@ const { sectionGridItems: gridItems } = storeToRefs(contentStore);
   </section>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../../../assets/scss/abstracts/variables' as *;
 @use '../../../assets/scss/abstracts/mixins' as *;
 
 .section-grid {
   padding: rem(25) 0;
   background-color: $secondary-color;
-
   @include responsive($breakpoint-tablet) {
     padding: rem(35) 0;
   }
@@ -43,18 +47,14 @@ const { sectionGridItems: gridItems } = storeToRefs(contentStore);
 .section-grid__list {
   display: grid;
   gap: rem(30);
-
   list-style: none;
   padding: 0;
   margin: 0;
-
   grid-template-columns: repeat(4, 1fr);
-
   @include responsive($breakpoint-tablet) {
     grid-template-columns: repeat(3, 1fr);
     gap: rem(20);
   }
-
   @include responsive($breakpoint-mobile) {
     grid-template-columns: 1fr;
     gap: rem(15);

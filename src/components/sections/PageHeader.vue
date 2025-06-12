@@ -84,7 +84,10 @@ const displayBreadcrumbs = computed<Breadcrumb[]>(() => {
   </section>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 

@@ -3,15 +3,15 @@
     lang="ts"
 >
 import {storeToRefs} from 'pinia';
-import {useContentStore} from '@/stores/content';
+import {useGalleryStore} from '@/stores/gallery';
 import {useSlider} from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
-const contentStore = useContentStore();
-const {galleryImages} = storeToRefs(contentStore);
+const galleryStore = useGalleryStore();
+const {galleryImages} = storeToRefs(galleryStore);
 
 const {
   visibleItems: visibleImages,
@@ -93,7 +93,6 @@ const {
     lang="scss"
     scoped
 >
-// ИСПРАВЛЕНИЕ 1: Импортируем встроенный модуль sass:color
 @use 'sass:color';
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
@@ -172,7 +171,6 @@ const {
 
   &:not(:disabled):hover {
     transform: scale(1.05);
-    // ИСПРАВЛЕНИЕ 2: Заменяем darken() на color.adjust()
     background-color: color.adjust($accent-color, $lightness: -8%);
   }
 

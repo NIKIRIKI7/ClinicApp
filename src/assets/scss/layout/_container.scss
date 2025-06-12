@@ -13,6 +13,5 @@
 
   @include responsive($breakpoint-mobile) {
     max-width: rem(310px);
-    padding: 0 rem(15px);
   }
 }

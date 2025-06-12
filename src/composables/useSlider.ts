@@ -1,5 +1,5 @@
-import { ref, computed, watch, onMounted, onUnmounted, type Ref } from 'vue';
-import { useBreakpoints } from '@vueuse/core';
+import {ref, computed, watch, onMounted, onUnmounted, type Ref} from 'vue';
+import {useBreakpoints} from '@vueuse/core';
 
 // --- Конфигурация, которую будет принимать наша функция ---
 interface ItemsPerPageConfig {

@@ -1,14 +1,16 @@
-// src/components/Header.vue
+<script
+    setup
+    lang="ts"
+>
 
-<script setup lang="ts">
-import { useContentStore } from '@/stores/content';
-import { storeToRefs } from 'pinia';
+import {useLayoutStore} from '@/stores/layout';
+import {storeToRefs} from 'pinia';
 import TelegramIcon from '@/assets/icons/socials-icon--telegram.svg?component';
 import WhatsappIcon from '@/assets/icons/socials-icon--whatsapp.svg?component';
 import CalendarIcon from '@/assets/icons/data__icon.svg?component';
 
-const contentStore = useContentStore();
-const { header } = storeToRefs(contentStore);
+const layoutStore = useLayoutStore();
+const {header} = storeToRefs(layoutStore);
 </script>
 
 <template>
@@ -119,7 +121,7 @@ const { header } = storeToRefs(contentStore);
       font-size: rem($font-size-md);
     }
     @include responsive($breakpoint-mobile) {
-      gap: rem(95);
+      gap: rem(80);
       font-size: rem($font-size-sm);
     }
   }

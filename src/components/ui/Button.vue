@@ -38,7 +38,7 @@ defineProps({
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 100px;
+  border-radius: rem(100px);
   text-decoration: none;
   text-transform: uppercase;
   text-align: center;
@@ -49,7 +49,7 @@ defineProps({
   box-sizing: border-box;
   line-height: 1.2;
 
-  padding: 19px 33px;
+  padding: rem(19px) rem(33px);
   font-family: $font-family-primary;
   font-weight: $font-weight-semibold;
   font-size: rem($font-size-base);
@@ -65,8 +65,9 @@ defineProps({
   }
 
   @include responsive($breakpoint-mobile) {
-    padding: 9px 14px;
-    font-size: rem($font-size-sm);
+    padding: rem(10px);
+    font-size: rem(10px);
+    font-weight: $font-weight-medium;
   }
 }
 </style>

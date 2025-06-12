@@ -1,15 +1,18 @@
-<script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useContentStore } from '@/stores/content';
-import { useSlider } from '@/composables/useSlider';
+<script
+    setup
+    lang="ts"
+>
+import {storeToRefs} from 'pinia';
+import {useLicensesStore} from '@/stores/licenses';
+import {useSlider} from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
 import Button from '@/components/ui/Button.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
-const contentStore = useContentStore();
-const { licenses } = storeToRefs(contentStore);
+const licensesStore = useLicensesStore();
+const {licenses} = storeToRefs(licensesStore);
 
 const {
   visibleItems: visibleLicenses,
@@ -22,8 +25,8 @@ const {
   openModal,
   closeModal,
 } = useSlider(licenses, {
-  itemsPerPage: { MOBILE: 2, TABLET: 3, DESKTOP: 4 },
-  breakpoints: { MOBILE: 426, TABLET: 834 }, // Используем брейкпоинт, который соответствует макету
+  itemsPerPage: {MOBILE: 2, TABLET: 3, DESKTOP: 4},
+  breakpoints: {MOBILE: 426, TABLET: 768},
 });
 </script>
 
@@ -39,17 +42,28 @@ const {
               @click="goToPrev"
               aria-label="Предыдущий документ"
           >
-            <arrowLeft class="licenses__arrow" aria-hidden="true" />
+            <arrowLeft
+                class="licenses__arrow"
+                aria-hidden="true"
+            />
           </button>
           <div class="licenses__viewport">
             <ul class="licenses__list">
-              <li v-for="license in visibleLicenses" :key="license.id" class="licenses__item">
+              <li
+                  v-for="license in visibleLicenses"
+                  :key="license.id"
+                  class="licenses__item"
+              >
                 <button
                     class="licenses__item-button"
                     :aria-label="`Открыть лицензию: ${license.alt}`"
                     @click="openModal(license)"
                 >
-                  <img :src="license.src" :alt="license.alt" class="licenses__image" />
+                  <img
+                      :src="license.src"
+                      :alt="license.alt"
+                      class="licenses__image"
+                  />
                 </button>
               </li>
             </ul>
@@ -60,19 +74,32 @@ const {
               @click="goToNext"
               aria-label="Следующий документ"
           >
-            <arrowRight class="licenses__arrow" aria-hidden="true" />
+            <arrowRight
+                class="licenses__arrow"
+                aria-hidden="true"
+            />
           </button>
         </div>
-        <Button href="#" class="licenses__button">
+        <Button
+            href="#"
+            class="licenses__button"
+        >
           ПЕРЕЙТИ В РАЗДЕЛ «ПРАВОВАЯ ИНФОРМАЦИЯ»
         </Button>
       </div>
     </div>
-    <AppModal :is-open="isModalOpen" :item="selectedLicense" @close="closeModal" />
+    <AppModal
+        :is-open="isModalOpen"
+        :item="selectedLicense"
+        @close="closeModal"
+    />
   </section>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 
@@ -80,16 +107,19 @@ const {
   padding: rem(80) 0;
   background-color: $light-gray;
 }
+
 .licenses__content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: rem(40);
 }
+
 .licenses__title {
   align-self: flex-start;
   width: 100%;
 }
+
 .licenses__slider {
   width: 100%;
   display: flex;
@@ -109,11 +139,13 @@ const {
     gap: rem(10);
   }
 }
+
 .licenses__viewport {
   overflow: hidden;
   flex-grow: 1;
   min-width: 0;
 }
+
 .licenses__list {
   display: flex;
   justify-content: center;
@@ -132,6 +164,7 @@ const {
     gap: rem(15);
   }
 }
+
 .licenses__item-button {
   display: block;
   background: none;
@@ -140,11 +173,13 @@ const {
   cursor: pointer;
   border-radius: rem(8);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
   &:hover {
     transform: scale(1.02);
     box-shadow: 0 rem(4) rem(15) rgba(0, 0, 0, 0.15);
   }
 }
+
 .licenses__image {
   display: block;
   aspect-ratio: 144 / 181;
@@ -159,6 +194,7 @@ const {
     width: rem(120);
   }
 }
+
 .licenses__nav-button {
   @include flex-center;
   flex-shrink: 0;
@@ -170,13 +206,16 @@ const {
   width: rem(60);
   height: rem(60);
   transition: opacity 0.2s ease, transform 0.2s ease;
+
   &:not(:disabled):hover {
     transform: scale(1.05);
   }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
+
   @include responsive($breakpoint-tablet) {
     width: rem(53);
     height: rem(53);
@@ -186,12 +225,14 @@ const {
     height: rem(40);
   }
 }
+
 .licenses__arrow {
   width: rem(24);
   @include responsive($breakpoint-mobile) {
     width: rem(16);
   }
 }
+
 .licenses__button {
   @include responsive($breakpoint-mobile) {
     font-size: rem(12px);

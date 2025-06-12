@@ -2,12 +2,11 @@
     setup
     lang="ts"
 >
-import { useContentStore } from '@/stores/content';
-import { storeToRefs } from 'pinia';
+import {useAdvantagesStore} from '@/stores/advantages';
+import {storeToRefs} from 'pinia';
 
-const contentStore = useContentStore();
-
-const { advantages } = storeToRefs(contentStore);
+const advantagesStore = useAdvantagesStore();
+const {advantages} = storeToRefs(advantagesStore);
 </script>
 
 <template>
