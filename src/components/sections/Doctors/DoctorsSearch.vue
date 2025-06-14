@@ -72,7 +72,7 @@ const handleFormSubmit = () => {
     <Button
         tag="button"
         type="submit"
-        class="doctors-search__submit"
+        variant="primary"
     >
       ПОКАЗАТЬ РЕЗУЛЬТАТ
     </Button>
@@ -88,8 +88,10 @@ const handleFormSubmit = () => {
 @use 'sass:color';
 
 .doctors-search {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
   gap: rem(20);
   background-color: $secondary-color;
   padding: rem(20px) rem(10px);
@@ -102,7 +104,9 @@ const handleFormSubmit = () => {
   }
 
   @include responsive($breakpoint-mobile) {
-    flex-direction: column;
+
+    grid-template-columns: 1fr;
+
     padding: rem(13px) rem(22px);
     margin: 0 0 rem(10px) 0;
   }
@@ -112,6 +116,7 @@ const handleFormSubmit = () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem(15);
+  flex-grow: 1;
 
   @include responsive($breakpoint-mobile) {
     display: flex;
@@ -124,10 +129,8 @@ const handleFormSubmit = () => {
   position: relative;
 }
 
-
 .doctors-search__input,
-.doctors-search__select,
-.doctors-search__submit {
+.doctors-search__select {
   flex-shrink: 0;
   height: rem(50px);
   @include responsive($breakpoint-tablet) {

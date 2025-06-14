@@ -80,3 +80,12 @@
     @content;
   }
 }
+
+// ===== 8.
+@mixin modal-image {
+  display: block;
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+  border-radius: rem(12px);
+}

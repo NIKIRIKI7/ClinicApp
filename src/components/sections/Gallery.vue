@@ -2,16 +2,16 @@
     setup
     lang="ts"
 >
-import {storeToRefs} from 'pinia';
-import {useGalleryStore} from '@/stores/gallery';
-import {useSlider} from '@/composables/useSlider';
+import { storeToRefs } from 'pinia';
+import { useGalleryStore } from '@/stores/gallery';
+import { useSlider } from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
 const galleryStore = useGalleryStore();
-const {galleryImages} = storeToRefs(galleryStore);
+const { galleryImages } = storeToRefs(galleryStore);
 
 const {
   visibleItems: visibleImages,
@@ -24,8 +24,8 @@ const {
   openModal,
   closeModal,
 } = useSlider(galleryImages, {
-  itemsPerPage: {MOBILE: 1, TABLET: 3, DESKTOP: 4},
-  breakpoints: {MOBILE: 426, TABLET: 834},
+  itemsPerPage: { MOBILE: 1, TABLET: 3, DESKTOP: 4 },
+  breakpoints: { MOBILE: 426, TABLET: 834 },
 });
 </script>
 
@@ -50,7 +50,7 @@ const {
                     :alt="image.alt"
                     class="gallery__image"
                     loading="lazy"
-                />
+                >
               </button>
             </li>
           </ul>
@@ -59,8 +59,8 @@ const {
           <button
               class="gallery__nav-button"
               :disabled="isPrevDisabled"
-              @click="goToPrev"
               aria-label="Предыдущее изображение"
+              @click="goToPrev"
           >
             <arrowLeft
                 class="gallery__arrow"
@@ -70,8 +70,8 @@ const {
           <button
               class="gallery__nav-button"
               :disabled="isNextDisabled"
-              @click="goToNext"
               aria-label="Следующее изображение"
+              @click="goToNext"
           >
             <arrowRight
                 class="gallery__arrow"
@@ -83,9 +83,15 @@ const {
     </div>
     <AppModal
         :is-open="isModalOpen"
-        :item="selectedImage"
         @close="closeModal"
-    />
+    >
+      <img
+          v-if="selectedImage"
+          :src="selectedImage.src"
+          :alt="selectedImage.alt"
+          class="gallery__modal-image"
+      >
+    </AppModal>
   </section>
 </template>
 
@@ -183,5 +189,9 @@ const {
 .gallery__arrow {
   width: rem(24);
   height: rem(24);
+}
+
+.gallery__modal-image {
+  @include modal-image;
 }
 </style>

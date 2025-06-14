@@ -1,15 +1,26 @@
+<!-- src/components/ui/Button.vue -->
 <script
     setup
     lang="ts"
 >
-defineProps({
+const props = defineProps({
   tag: {
     type: String,
-    default: 'a',
+    default: 'button', // Изменено на 'button' как более безопасное значение по умолчанию
   },
   href: {
     type: String,
     default: '#',
+  },
+  /**
+   * @description Визуальный стиль кнопки.
+   * @type {'primary' | 'secondary'}
+   */
+  variant: {
+    type: String,
+    default: 'primary',
+    // Валидатор для гарантии, что используются только поддерживаемые варианты
+    validator: (value: string) => ['primary', 'secondary'].includes(value),
   },
 });
 </script>
@@ -18,7 +29,7 @@ defineProps({
   <component
       :is="tag"
       :href="tag === 'a' ? href : undefined"
-      class="base-button"
+      :class="['base-button', `base-button--${props.variant}`]"
   >
     <slot />
   </component>
@@ -28,46 +39,74 @@ defineProps({
     lang="scss"
     scoped
 >
-// Подключаем переменные и миксины
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 @use 'sass:color';
 
+// Общие стили, не зависящие от варианта
 .base-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: rem(100px);
   text-decoration: none;
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, padding 0.3s ease, height 0.3s ease;
-  background-color: $accent-color;
-  color: $text-color-light;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
   box-sizing: border-box;
   line-height: 1.2;
-
-  padding: rem(19px) rem(33px);
   font-family: $font-family-primary;
   font-weight: $font-weight-semibold;
   font-size: rem($font-size-base);
 
-  &:hover {
+  // Общие стили для состояний
+  &:active {
+    transform: translateY(0);
+  }
+
+  @include responsive($breakpoint-mobile) {
+    font-size: rem(10px);
+    font-weight: $font-weight-medium;
+  }
+}
+
+// --- Модификаторы ---
+
+// 1. Основной (розовый) стиль
+.base-button--primary {
+  padding: rem(19px) rem(33px);
+  border-radius: rem(100px);
+  background-color: $accent-color;
+  color: $text-color-light;
+
+  @include on-event {
     background-color: color.adjust($accent-color, $lightness: -5%);
     transform: translateY(-2px);
   }
 
   &:active {
     background-color: color.adjust($accent-color, $lightness: -8%);
-    transform: translateY(0);
   }
 
   @include responsive($breakpoint-mobile) {
     padding: rem(10px);
-    font-size: rem(10px);
-    font-weight: $font-weight-medium;
+  }
+}
+
+.base-button--secondary {
+  padding: rem(20px) rem(40px);
+  border-radius: rem(900px);
+  background: $white;
+  color: $text-color-dark;
+
+  @include on-event {
+    background-color: color.adjust($white, $lightness: -6%);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: color.adjust($white, $lightness: -12%);
   }
 }
 </style>

@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="doctors-view">
+  <section class="doctors-view">
     <div class="container">
       <section
           class="doctors-view__search"
@@ -45,14 +45,16 @@ onMounted(() => {
         <DoctorsGrid />
       </section>
     </div>
-  </div>
+  </section>
 </template>
 
 <style
     scoped
     lang="scss"
 >
-/* Можно добавить общие стили для view или оставить пустым */
+@use '../../../assets/scss/abstracts/variables' as *;
+@use '../../../assets/scss/abstracts/mixins' as *;
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -64,5 +66,9 @@ onMounted(() => {
   clip-path: inset(100%);
   clip: rect(0 0 0 0);
   overflow: hidden;
+}
+
+.doctors-view {
+  margin: 0 0 rem(40px) 0;
 }
 </style>

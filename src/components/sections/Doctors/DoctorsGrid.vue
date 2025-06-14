@@ -106,10 +106,10 @@ const doctorsStore = useDoctorsStore();
     display: flex;
     gap: rem(15px);
     justify-content: flex-end;
-    margin: 0 0 rem(35px) 0;
+    margin: 0 0 rem(50px) 0;
 
     @include responsive($breakpoint-tablet) {
-      margin: 0 0 rem(50px) 0;
+      margin: 0 0 rem(75px) 0;
     }
 
     @include responsive($breakpoint-mobile) {

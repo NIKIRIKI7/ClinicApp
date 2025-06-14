@@ -2,9 +2,9 @@
     setup
     lang="ts"
 >
-import {storeToRefs} from 'pinia';
-import {useLicensesStore} from '@/stores/licenses';
-import {useSlider} from '@/composables/useSlider';
+import { storeToRefs } from 'pinia';
+import { useLicensesStore } from '@/stores/licenses';
+import { useSlider } from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
 import Button from '@/components/ui/Button.vue';
@@ -12,7 +12,7 @@ import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
 const licensesStore = useLicensesStore();
-const {licenses} = storeToRefs(licensesStore);
+const { licenses } = storeToRefs(licensesStore);
 
 const {
   visibleItems: visibleLicenses,
@@ -25,8 +25,8 @@ const {
   openModal,
   closeModal,
 } = useSlider(licenses, {
-  itemsPerPage: {MOBILE: 2, TABLET: 3, DESKTOP: 4},
-  breakpoints: {MOBILE: 426, TABLET: 768},
+  itemsPerPage: { MOBILE: 2, TABLET: 3, DESKTOP: 4 },
+  breakpoints: { MOBILE: 426, TABLET: 768 },
 });
 </script>
 
@@ -34,13 +34,15 @@ const {
   <section class="licenses">
     <div class="container">
       <div class="licenses__content">
-        <h2 class="licenses__title">Лицензии</h2>
+        <h2 class="licenses__title">
+          Лицензии
+        </h2>
         <div class="licenses__slider">
           <button
               class="licenses__nav-button"
               :disabled="isPrevDisabled"
-              @click="goToPrev"
               aria-label="Предыдущий документ"
+              @click="goToPrev"
           >
             <arrowLeft
                 class="licenses__arrow"
@@ -63,7 +65,8 @@ const {
                       :src="license.src"
                       :alt="license.alt"
                       class="licenses__image"
-                  />
+                      loading="lazy"
+                  >
                 </button>
               </li>
             </ul>
@@ -71,8 +74,8 @@ const {
           <button
               class="licenses__nav-button"
               :disabled="isNextDisabled"
-              @click="goToNext"
               aria-label="Следующий документ"
+              @click="goToNext"
           >
             <arrowRight
                 class="licenses__arrow"
@@ -81,8 +84,9 @@ const {
           </button>
         </div>
         <Button
+            tag="a"
             href="#"
-            class="licenses__button"
+            variant="primary"
         >
           ПЕРЕЙТИ В РАЗДЕЛ «ПРАВОВАЯ ИНФОРМАЦИЯ»
         </Button>
@@ -90,9 +94,15 @@ const {
     </div>
     <AppModal
         :is-open="isModalOpen"
-        :item="selectedLicense"
         @close="closeModal"
-    />
+    >
+      <img
+          v-if="selectedLicense"
+          :src="selectedLicense.src"
+          :alt="selectedLicense.alt"
+          class="licenses__modal-image"
+      >
+    </AppModal>
   </section>
 </template>
 
@@ -233,10 +243,7 @@ const {
   }
 }
 
-.licenses__button {
-  @include responsive($breakpoint-mobile) {
-    font-size: rem(12px);
-    padding: rem(12) rem(16);
-  }
+.licenses__modal-image {
+  @include modal-image;
 }
 </style>
