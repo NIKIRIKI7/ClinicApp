@@ -1,14 +1,16 @@
-<!-- src/components/ui/AppModal.vue (УЛУЧШЕННЫЙ) -->
-<script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
+<script
+    setup
+    lang="ts"
+>
+import {ref, watch, nextTick} from 'vue';
 
 interface Props {
   isOpen: boolean;
-  variant?: 'card' | 'image'; // Вариант отображения
+  variant?: 'card' | 'image';
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'card', // По умолчанию - текстовая карточка
+  variant: 'card',
 });
 
 const emit = defineEmits(['close']);
@@ -22,17 +24,19 @@ const handleModalClick = (event: MouseEvent) => {
   }
 };
 
-// Управление фокусом для доступности (a11y)
 watch(() => props.isOpen, async (isOpen) => {
   if (isOpen) {
-    // Сохраняем элемент, который открыл модалку
     triggerElement.value = document.activeElement as HTMLElement;
-    // Ждем, пока DOM обновится, и устанавливаем фокус внутрь модалки
     await nextTick();
-    const focusableElement = modalContentRef.value?.querySelector('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])') as HTMLElement;
-    focusableElement?.focus();
+    const focusableElement = modalContentRef.value?.querySelector('button:not(.app-modal__close), a, input, select, textarea, [tabindex]:not([tabindex="-1"])') as HTMLElement;
+
+    if (focusableElement) {
+      focusableElement.focus();
+    } else {
+      // Fallback to the close button if no other focusable element is found
+      (modalContentRef.value?.querySelector('.app-modal__close') as HTMLElement)?.focus();
+    }
   } else {
-    // Возвращаем фокус на исходный элемент
     triggerElement.value?.focus();
   }
 });
@@ -41,8 +45,15 @@ watch(() => props.isOpen, async (isOpen) => {
 <template>
   <Teleport to="body">
     <Transition name="modal-fade">
-      <div v-if="isOpen" class="app-modal" @click="handleModalClick">
-        <Transition name="modal-scale" appear>
+      <div
+          v-if="isOpen"
+          class="app-modal"
+          @click="handleModalClick"
+      >
+        <Transition
+            name="modal-scale"
+            appear
+        >
           <div
               v-if="isOpen"
               ref="modalContentRef"
@@ -50,6 +61,8 @@ watch(() => props.isOpen, async (isOpen) => {
               role="dialog"
               aria-modal="true"
           >
+            <!-- ИСПРАВЛЕНИЕ: Слот перемещен ПЕРЕД кнопкой закрытия для правильного порядка фокуса -->
+            <slot />
             <button
                 class="app-modal__close"
                 aria-label="Закрыть модальное окно"
@@ -57,7 +70,6 @@ watch(() => props.isOpen, async (isOpen) => {
             >
               ×
             </button>
-            <slot />
           </div>
         </Transition>
       </div>
@@ -65,7 +77,10 @@ watch(() => props.isOpen, async (isOpen) => {
   </Teleport>
 </template>
 
-<style lang="scss" scoped>
+<style
+    lang="scss"
+    scoped
+>
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 
@@ -87,7 +102,6 @@ watch(() => props.isOpen, async (isOpen) => {
   max-height: 90vh;
 }
 
-// Стили для варианта "карточка" (текст, ошибки)
 .app-modal__content--card {
   background-color: $white;
   padding: rem(40px) rem(50px);
@@ -103,12 +117,12 @@ watch(() => props.isOpen, async (isOpen) => {
     padding: rem(30px) rem(20px);
   }
 
-  // Стилизуем контент из слота
   :deep(h3) {
     font-size: rem(24px);
     font-weight: $font-weight-bold;
     margin: 0;
   }
+
   :deep(p) {
     font-size: rem(16px);
     line-height: 1.5;
@@ -117,11 +131,10 @@ watch(() => props.isOpen, async (isOpen) => {
   }
 }
 
-// Стили для варианта "изображение"
 .app-modal__content--image {
   background: none;
   padding: 0;
-  // Стилизуем img из слота
+
   :deep(img) {
     display: block;
     max-height: 90vh;
@@ -164,8 +177,20 @@ watch(() => props.isOpen, async (isOpen) => {
   }
 }
 
-.modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.3s ease; }
-.modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
-.modal-scale-enter-active, .modal-scale-leave-active { transition: all 0.3s ease; }
-.modal-scale-enter-from, .modal-scale-leave-to { transform: scale(0.85); opacity: 0; }
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-fade-enter-from, .modal-fade-leave-to {
+  opacity: 0;
+}
+
+.modal-scale-enter-active, .modal-scale-leave-active {
+  transition: all 0.3s ease;
+}
+
+.modal-scale-enter-from, .modal-scale-leave-to {
+  transform: scale(0.85);
+  opacity: 0;
+}
 </style>

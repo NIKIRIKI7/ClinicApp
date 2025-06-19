@@ -2,21 +2,33 @@
     setup
     lang="ts"
 >
+import {onMounted} from 'vue';
 import {useAdvantagesStore} from '@/stores/advantages';
 import {storeToRefs} from 'pinia';
+import AppLoader from '@/components/ui/AppLoader.vue';
+import AppError from '@/components/ui/AppError.vue';
 
 const advantagesStore = useAdvantagesStore();
-const {advantages} = storeToRefs(advantagesStore);
+const {items: advantages, isLoading, error} = storeToRefs(advantagesStore);
+
+onMounted(() => {
+  advantagesStore.fetchItems();
+});
 </script>
 
 <template>
   <section class="advantages">
     <div class="container advantages__container">
-      <div class="advantages__content">
-        <h2 class="advantages__title">
-          {{ advantages.title }}
-        </h2>
-
+      <AppLoader v-if="isLoading" />
+      <AppError
+          v-else-if="error"
+          :message="error"
+      />
+      <div
+          v-else-if="advantages"
+          class="advantages__content"
+      >
+        <h2 class="advantages__title">{{ advantages.title }}</h2>
         <div class="advantages__content-wrapper">
           <img
               class="advantages__blob"
@@ -24,16 +36,14 @@ const {advantages} = storeToRefs(advantagesStore);
               :alt="advantages.blob.alt"
               aria-hidden="true"
           >
-
           <article
               v-for="item in advantages.items"
               :key="item.id"
               class="advantages__item"
           >
-            <h3 class="advantages__item-title">
-              {{ item.title }}
-            </h3>
-            <p
+            <h3 class="advantages__item-title">{{ item.title }}</h3>
+            <!-- ИСПРАВЛЕНИЕ: тег <p> заменен на <div> для корректной вставки списка -->
+            <div
                 class="advantages__item-description"
                 v-html="item.description"
             />
@@ -98,7 +108,7 @@ const {advantages} = storeToRefs(advantagesStore);
     }
 
     @include responsive($breakpoint-mobile) {
-      bottom: rem(400px);
+      bottom: rem(832px);
       left: rem(45px);
       width: rem(255px);
       height: rem(209px);
@@ -112,11 +122,33 @@ const {advantages} = storeToRefs(advantagesStore);
   }
 
   &__item {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
     padding: 0 0 10px 0;
+
+    &:not(:last-child) {
+      margin-bottom: rem(20);
+    }
   }
 
-  &__item-title, &__item-description {
-    line-height: 1;
+  &__item-title {
+    line-height: 1.4;
+  }
+
+  &__item-description {
+    line-height: 1.5;
+
+    :deep(ul) {
+      list-style-type: '• ';
+      padding-left: rem(5);
+      margin-top: rem(10);
+    }
+
+    :deep(li) {
+      padding-left: rem(10);
+      margin-bottom: rem(4);
+    }
   }
 
   &__title {

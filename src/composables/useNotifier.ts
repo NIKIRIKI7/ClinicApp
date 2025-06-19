@@ -1,4 +1,4 @@
-import { useToast } from 'vue-toastification';
+import {useToast} from 'vue-toastification';
 
 /**
  * @composable useNotifier
@@ -13,18 +13,17 @@ export function useNotifier() {
    * @param {string} message - Текст уведомления.
    */
   const showSuccess = (message: string) => {
-      toast.success(message);
-    };
+    toast.success(message);
+  };
 
   /**
    * @function showError
    * @description Показывает уведомление об ошибке.
    * @param {string} message - Текст уведомления.
    */
-    // ИСПРАВЛЕНИЕ: Используем простой и надежный тип 'string'
   const showError = (message: string) => {
-      toast.error(message);
-    };
+    toast.error(message);
+  };
 
   return {
     showSuccess,

@@ -1,4 +1,4 @@
-import { createFormStore } from './factories/createFormStore';
+import {createFormStore} from './factories/createFormStore';
 import doctorsImage from '@/assets/images/doctor-form__item.png';
 
 export const useCallbackStore = createFormStore('callback', {

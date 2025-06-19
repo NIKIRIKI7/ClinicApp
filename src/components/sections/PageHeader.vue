@@ -6,7 +6,6 @@ import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 import type {RouteLocationRaw} from 'vue-router';
 
-// Этот интерфейс теперь соответствует структуре данных из роутера
 interface Breadcrumb {
   text: string;
   to?: RouteLocationRaw;
@@ -24,10 +23,7 @@ const displayTitle = computed<string>(() => {
   return props.title ?? (route.meta.title as string) ?? '';
 });
 
-// ЛОГИКА УПРОЩЕНА!
-// Компонент больше не формирует данные, а просто берет их в готовом виде.
 const displayBreadcrumbs = computed<Breadcrumb[]>(() => {
-  // Приоритет у props. Если их нет, берем данные из meta как есть.
   return props.breadcrumbs ?? (route.meta.breadcrumbs as Breadcrumb[]) ?? [];
 });
 </script>

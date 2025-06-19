@@ -2,16 +2,25 @@
     setup
     lang="ts"
 >
-import { storeToRefs } from 'pinia';
-import { useGalleryStore } from '@/stores/gallery';
-import { useSlider } from '@/composables/useSlider';
+import {onMounted} from 'vue';
+import {storeToRefs} from 'pinia';
+import {useGalleryStore} from '@/stores/gallery';
+import {useSlider} from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
+import AppLoader from '@/components/ui/AppLoader.vue';
+import AppError from '@/components/ui/AppError.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
 const galleryStore = useGalleryStore();
-const { galleryImages } = storeToRefs(galleryStore);
+// ИСПРАВЛЕНИЕ: Получены isLoading и error для управления состоянием
+const {items: galleryImages, isLoading, error} = storeToRefs(galleryStore);
+
+// ИСПРАВЛЕНИЕ: Данные запрашиваются при монтировании компонента
+onMounted(() => {
+  galleryStore.fetchItems();
+});
 
 const {
   visibleItems: visibleImages,
@@ -24,15 +33,24 @@ const {
   openModal,
   closeModal,
 } = useSlider(galleryImages, {
-  itemsPerPage: { MOBILE: 1, TABLET: 3, DESKTOP: 4 },
-  breakpoints: { MOBILE: 426, TABLET: 834 },
+  itemsPerPage: {MOBILE: 1, TABLET: 3, DESKTOP: 4},
+  breakpoints: {MOBILE: 426, TABLET: 834},
 });
 </script>
 
 <template>
   <section class="gallery">
     <div class="container">
-      <div class="gallery__content">
+      <!-- ИСПРАВЛЕНИЕ: Добавлена обработка состояний загрузки и ошибки -->
+      <AppLoader v-if="isLoading" />
+      <AppError
+          v-else-if="error"
+          :message="error"
+      />
+      <div
+          v-else-if="galleryImages && galleryImages.length"
+          class="gallery__content"
+      >
         <div class="gallery__viewport">
           <ul class="gallery__list">
             <li
@@ -55,7 +73,10 @@ const {
             </li>
           </ul>
         </div>
-        <div class="gallery__navigation">
+        <div
+            v-if="visibleImages.length < galleryImages.length"
+            class="gallery__navigation"
+        >
           <button
               class="gallery__nav-button"
               :disabled="isPrevDisabled"
@@ -83,6 +104,7 @@ const {
     </div>
     <AppModal
         :is-open="isModalOpen"
+        variant="image"
         @close="closeModal"
     >
       <img
@@ -99,6 +121,7 @@ const {
     lang="scss"
     scoped
 >
+/* Стили без изменений */
 @use 'sass:color';
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;

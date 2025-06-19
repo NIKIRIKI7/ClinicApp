@@ -11,7 +11,7 @@ import Footer from "@/components/layout/Footer.vue";
 <template>
   <PageHeader />
   <DoctorsView />
-  <CallbackForm />
+  <CallbackForm variant="standalone" />
   <Footer :theme="'dark'" />
 </template>
 

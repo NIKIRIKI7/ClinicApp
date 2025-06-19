@@ -1,21 +1,5 @@
 import {defineStore} from 'pinia';
-
-// --- ИНТЕРФЕЙСЫ ТИПОВ ---
-export interface NavItem {
-  to: string;
-  text: string;
-}
-
-export interface Contacts {
-  phone: {
-    number: string;
-    href: string;
-  };
-  socials: {
-    telegram: string;
-    whatsapp: string;
-  };
-}
+import type {NavItem, Contacts} from '@/types';
 
 /**
  * @store useLayoutStore
@@ -43,6 +27,7 @@ export const useLayoutStore = defineStore('layout', {
     footer: {
       copyrightBase: 'ООО «ГК РТ-Клиника» ИНН 1102334455',
       disclaimer: 'ИМЕЮТСЯ ПРОТИВОПОКАЗАНИЯ.\nНЕОБХОДИМА КОНСУЛЬТАЦИЯ СПЕЦИАЛИСТА',
+      address: 'Республика Татарстан\nг. Любой, торговый центр,\nулица Советская, д. 1',
     },
   }),
   getters: {

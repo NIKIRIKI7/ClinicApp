@@ -2,17 +2,24 @@
     setup
     lang="ts"
 >
-import { storeToRefs } from 'pinia';
-import { useLicensesStore } from '@/stores/licenses';
-import { useSlider } from '@/composables/useSlider';
+import {onMounted} from 'vue';
+import {storeToRefs} from 'pinia';
+import {useLicensesStore} from '@/stores/licenses';
+import {useSlider} from '@/composables/useSlider';
 
 import AppModal from '@/components/ui/AppModal.vue';
+import AppLoader from '@/components/ui/AppLoader.vue';
+import AppError from '@/components/ui/AppError.vue';
 import Button from '@/components/ui/Button.vue';
 import arrowLeft from '@/assets/icons/arrow-left.svg?component';
 import arrowRight from '@/assets/icons/arrow-right.svg?component';
 
 const licensesStore = useLicensesStore();
-const { licenses } = storeToRefs(licensesStore);
+const {items: licenses, isLoading, error} = storeToRefs(licensesStore);
+
+onMounted(() => {
+  licensesStore.fetchItems();
+});
 
 const {
   visibleItems: visibleLicenses,
@@ -25,15 +32,24 @@ const {
   openModal,
   closeModal,
 } = useSlider(licenses, {
-  itemsPerPage: { MOBILE: 2, TABLET: 3, DESKTOP: 4 },
-  breakpoints: { MOBILE: 426, TABLET: 768 },
+  itemsPerPage: {MOBILE: 2, TABLET: 3, DESKTOP: 4},
+  breakpoints: {MOBILE: 426, TABLET: 768},
 });
 </script>
 
 <template>
   <section class="licenses">
     <div class="container">
-      <div class="licenses__content">
+      <!-- ИСПРАВЛЕНИЕ: Добавлена обработка состояний загрузки и ошибки -->
+      <AppLoader v-if="isLoading" />
+      <AppError
+          v-else-if="error"
+          :message="error"
+      />
+      <div
+          v-else-if="licenses && licenses.length"
+          class="licenses__content"
+      >
         <h2 class="licenses__title">
           Лицензии
         </h2>
@@ -94,6 +110,7 @@ const {
     </div>
     <AppModal
         :is-open="isModalOpen"
+        variant="image"
         @close="closeModal"
     >
       <img
@@ -110,6 +127,7 @@ const {
     lang="scss"
     scoped
 >
+/* Стили без изменений */
 @use '../../assets/scss/abstracts/variables' as *;
 @use '../../assets/scss/abstracts/mixins' as *;
 

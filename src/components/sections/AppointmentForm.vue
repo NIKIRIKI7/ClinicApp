@@ -2,14 +2,14 @@
     setup
     lang="ts"
 >
-import { storeToRefs } from 'pinia';
-import { useAppointmentStore } from '@/stores/appointmentStore';
-import { FORM_STATUS } from '@/stores/factories/createFormStore';
+import {storeToRefs} from 'pinia';
+import {useAppointmentStore} from '@/stores/appointmentStore';
+import {FORM_STATUS} from '@/stores/factories/createFormStore';
 import BaseButton from '@/components/ui/Button.vue';
 
 const appointmentStore = useAppointmentStore();
-const { name, phone, status, image } = storeToRefs(appointmentStore);
-const { submitForm } = appointmentStore;
+const {name, phone, status, image} = storeToRefs(appointmentStore);
+const {submitForm} = appointmentStore;
 
 const handleSubmit = async () => {
   await submitForm();
@@ -17,7 +17,10 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section class="appointment-form">
+  <section
+      id="appointment-form"
+      class="appointment-form"
+  >
     <div class="container">
       <div class="appointment-form__content">
         <div class="appointment-form__main">
@@ -47,7 +50,6 @@ const handleSubmit = async () => {
                 >
               </div>
               <div class="appointment-form__field-group">
-                <!-- ИЗМЕНЕНИЕ: Удалена директива v-maska, возвращен pattern -->
                 <input
                     id="appointment-phone"
                     v-model="phone"
@@ -80,7 +82,8 @@ const handleSubmit = async () => {
               <a
                   href="/privacy-policy"
                   class="appointment-form__legal-link"
-              >обработку персональных данных</a>
+              >обработку персональных данных
+              </a>
             </p>
           </form>
         </div>

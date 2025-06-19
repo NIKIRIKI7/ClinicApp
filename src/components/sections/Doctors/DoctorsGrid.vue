@@ -1,15 +1,12 @@
-<!-- src/components/sections/Doctors/DoctorsGrid.vue -->
 <script
     setup
     lang="ts"
 >
 import {useDoctorsStore} from '@/stores/doctors';
 import DoctorCard from './DoctorCard.vue';
-import ArrowLeft from '@/assets/icons/arrow-left.svg?component';
-import ArrowRight from '@/assets/icons/arrow-right.svg?component';
-// ИСПРАВЛЕНИЕ: Импортируем созданные UI-компоненты
 import AppLoader from '@/components/ui/AppLoader.vue';
 import AppError from '@/components/ui/AppError.vue';
+import UIPagination from '@/components/ui/UIPagination.vue';
 
 const doctorsStore = useDoctorsStore();
 </script>
@@ -20,29 +17,14 @@ const doctorsStore = useDoctorsStore();
         v-if="doctorsStore.totalPages > 1 && !doctorsStore.isLoading && !doctorsStore.error"
         class="doctors-grid__controls"
     >
-      <button
-          class="doctors-grid__button doctors-grid__button--prev"
-          @click="doctorsStore.setPage(doctorsStore.currentPage - 1)"
-          :disabled="doctorsStore.isPrevDisabled"
-      >
-        <span class="doctors-grid__icon-wrapper">
-          <ArrowLeft class="doctors-grid__icon" />
-        </span>
-        назад
-      </button>
-      <button
-          class="doctors-grid__button doctors-grid__button--next"
-          @click="doctorsStore.setPage(doctorsStore.currentPage + 1)"
-          :disabled="doctorsStore.isNextDisabled"
-      >
-        вперед
-        <span class="doctors-grid__icon-wrapper">
-          <ArrowRight class="doctors-grid__icon" />
-        </span>
-      </button>
+      <UIPagination
+          :is-prev-disabled="doctorsStore.isPrevDisabled"
+          :is-next-disabled="doctorsStore.isNextDisabled"
+          @prev="doctorsStore.goToPrevPage"
+          @next="doctorsStore.goToNextPage"
+      />
     </div>
 
-    <!-- ИСПРАВЛЕНИЕ: Используем компоненты AppLoader и AppError -->
     <div
         v-if="doctorsStore.isLoading"
         class="doctors-grid__state"
@@ -52,7 +34,7 @@ const doctorsStore = useDoctorsStore();
 
     <div
         v-else-if="doctorsStore.error"
-        class="doctors-grid__state doctors-grid__state--error"
+        class="doctors-grid__state"
     >
       <AppError :message="doctorsStore.error" />
     </div>
@@ -81,30 +63,21 @@ const doctorsStore = useDoctorsStore();
     scoped
     lang="scss"
 >
-/* Стили остаются без изменений. BEM используется корректно. */
 @use '../../../assets/scss/abstracts/variables' as *;
 @use '../../../assets/scss/abstracts/mixins' as *;
-@use 'sass:color';
 
 .doctors-grid {
   position: relative;
 
   &__state {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     min-height: 300px;
     font-size: rem($font-size-lg);
     color: $text-color-dark;
-
-    &--error {
-      color: red;
-    }
   }
 
   &__controls {
     display: flex;
-    gap: rem(15px);
     justify-content: flex-end;
     margin: 0 0 rem(50px) 0;
 
@@ -116,57 +89,6 @@ const doctorsStore = useDoctorsStore();
       margin: 0 0 rem(30px) 0;
       justify-content: center;
     }
-  }
-
-  &__button {
-    display: flex;
-    align-items: center;
-    gap: rem(10);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: $text-color-dark;
-    font-family: $font-family-primary;
-    font-size: rem($font-size-md);
-    font-weight: $font-weight-medium;
-    transition: color 0.3s ease;
-
-    &:hover:not(:disabled) {
-      color: $primary-color;
-
-      .doctors-grid__icon-wrapper {
-        background-color: color.adjust($secondary-color, $lightness: -10%);
-      }
-    }
-
-    &:disabled {
-      color: $text-color-dark;
-      opacity: 0.5;
-      cursor: not-allowed;
-
-      .doctors-grid__icon-wrapper {
-        background-color: $light-gray;
-        opacity: 1;
-      }
-    }
-  }
-
-  &__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: rem(36);
-    height: rem(36);
-    border-radius: 50%;
-    background-color: $secondary-color;
-    transition: background-color 0.3s ease;
-  }
-
-  &__icon {
-    width: rem(12);
-    height: rem(12);
-    color: $white;
   }
 
   &__grid {

@@ -1,15 +1,12 @@
-// src/main.ts (ФИНАЛЬНАЯ ВЕРСИЯ БЕЗ MASKA)
-
 import './assets/scss/main.scss'
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia'
 
 import App from './App.vue'
 import router from './router'
 
-
-import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
+import Toast, {type PluginOptions, POSITION} from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
 const app = createApp(App)
@@ -17,8 +14,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 
-
-// Настройка и регистрация плагина уведомлений
 const toastOptions: PluginOptions = {
   position: POSITION.TOP_RIGHT,
   timeout: 5000,

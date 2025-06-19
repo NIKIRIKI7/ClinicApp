@@ -2,20 +2,34 @@
     setup
     lang="ts"
 >
-import { storeToRefs } from 'pinia';
-import { useCallbackStore } from '@/stores/useCallbackStore';
-import { FORM_STATUS } from '@/stores/factories/createFormStore';
+import {storeToRefs} from 'pinia';
+import {useCallbackStore} from '@/stores/useCallbackStore';
+import {FORM_STATUS} from '@/stores/factories/createFormStore';
 import BaseButton from '@/components/ui/Button.vue';
 
 /**
  * @component CallbackForm
- * @description Секция с формой для заказа обратного звонка,
- * построенная с учетом доступности и детализированной обратной связи.
+ * @description Универсальная секция с формой для заказа обратного звонка.
+ * @props {String} variant - 'standalone' (полноэкранная секция) или 'integrated' (встраиваемая).
  */
+interface Props {
+  variant?: 'standalone' | 'integrated';
+}
+
+withDefaults(defineProps<Props>(), {
+  variant: 'standalone',
+});
 
 const callbackStore = useCallbackStore();
-const { name, phone, status, image, fieldErrors, liveAnnouncerText } = storeToRefs(callbackStore);
-const { submitForm } = callbackStore;
+const {
+  name,
+  phone,
+  status,
+  image,
+  fieldErrors,
+  liveAnnouncerText
+} = storeToRefs(callbackStore);
+const {submitForm} = callbackStore;
 
 const handleSubmit = async () => {
   await submitForm();
@@ -23,8 +37,10 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section class="callback-form">
-    <div class="container">
+  <section
+      :class="['callback-form', `callback-form--${variant}`]"
+  >
+    <div class="container callback-form__container">
       <form
           class="callback-form__content"
           @submit.prevent="handleSubmit"
@@ -52,7 +68,8 @@ const handleSubmit = async () => {
               <label
                   for="callback-name"
                   class="visually-hidden"
-              >Введите ваше имя</label>
+              >Введите ваше имя
+              </label>
               <input
                   id="callback-name"
                   v-model="name"
@@ -78,7 +95,8 @@ const handleSubmit = async () => {
               <label
                   for="callback-phone"
                   class="visually-hidden"
-              >Введите ваш номер телефона</label>
+              >Введите ваш номер телефона
+              </label>
               <input
                   id="callback-phone"
                   v-model="phone"
@@ -113,8 +131,9 @@ const handleSubmit = async () => {
             </BaseButton>
           </div>
         </div>
+        <!-- ================== ИЗМЕНЕНИЕ ЗДЕСЬ ================== -->
         <div
-            v-if="image"
+            v-if="image && variant === 'standalone'"
             class="callback-form__visual"
         >
           <img
@@ -148,113 +167,138 @@ const handleSubmit = async () => {
   border: 0;
 }
 
+// Общие стили для обоих вариантов
 .callback-form {
-  background-color: $secondary-color;
+  &__content {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    @include responsive($breakpoint-tablet) {
+      flex-direction: column;
+      align-items: center;
+      gap: rem(40);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: rem(40);
+    width: rem(380);
+    flex-shrink: 0;
+
+    @include responsive($breakpoint-tablet) {
+      width: 100%;
+      max-width: rem(400);
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: rem(17);
+    color: $white;
+  }
+
+  &__title {
+    font-size: rem(24px);
+    color: $white;
+  }
+
+  &__description {
+    font-size: rem(16px);
+  }
+
+  &__fields {
+    display: grid;
+    gap: rem(15);
+    width: 100%;
+  }
+
+  &__field-group {
+    min-height: rem(60);
+  }
+
+  &__input {
+    width: 100%;
+    height: rem(60);
+    border-radius: rem(900);
+    background-color: transparent;
+    border: rem(2) solid $white;
+    padding: 0 rem(40);
+    color: $white;
+    font-size: rem(14px);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: $white;
+      text-transform: uppercase;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 rem(2) $white;
+    }
+
+    &--invalid {
+      border-color: color.adjust($accent-color, $lightness: 10%);
+
+      &:focus {
+        box-shadow: 0 0 0 rem(2) color.adjust($accent-color, $lightness: 10%);
+      }
+    }
+  }
+
+  &__error-message {
+    color: $white;
+    font-size: rem(12);
+    padding: rem(4) rem(40) 0;
+    text-align: left;
+
+    @include responsive($breakpoint-tablet) {
+      text-align: center;
+    }
+  }
+
+  &__visual {
+    display: flex;
+    align-items: center;
+  }
 }
 
-.callback-form__content {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+// Стили для полноэкранной секции
+.callback-form--standalone {
+  background-color: $secondary-color;
   padding: rem(63) 0;
 
   @include responsive($breakpoint-tablet) {
     padding: rem(47) 0;
   }
-  @include responsive($breakpoint-mobile) {
-    flex-direction: column;
-    gap: rem(41);
-    align-items: center;
-  }
 }
 
-.callback-form__body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: rem(40);
-  width: rem(380);
-
-  @include responsive($breakpoint-tablet) {
-    width: rem(363);
-  }
-  @include responsive($breakpoint-mobile) {
-    width: 100%;
-    max-width: rem(320);
-    padding: rem(41) 0 0 0;
-  }
-}
-
-.callback-form__head {
-  display: flex;
-  flex-direction: column;
-  gap: rem(17);
-  color: $white;
-}
-
-.callback-form__title {
-  font-size: rem(24px);
-  color: $white;
-}
-
-.callback-form__description {
-  font-size: rem(16px);
-}
-
-.callback-form__fields {
-  display: grid;
-  gap: rem(15);
-}
-
-.callback-form__field-group {
-  min-height: rem(60);
-}
-
-.callback-form__input {
-  width: 100%;
-  height: rem(60);
-  border-radius: rem(900);
-  background-color: transparent;
-  border: rem(2) solid $white;
-  padding: 0 rem(40);
-  color: $white;
-  font-size: rem(14px);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-  &::placeholder {
-    color: $white;
-    text-transform: uppercase;
+// Стили для встроенной формы (в PricingSection)
+.callback-form--integrated {
+  .callback-form__container {
+    padding: 0; // Родитель контролирует отступы
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 rem(2) $white;
-  }
+  .callback-form__content {
+    background-color: $secondary-color;
+    border-radius: rem(20);
+    padding: rem(40);
+    height: 100%;
+    justify-content: center; // Центрируем контент, так как картинки нет
 
-  &--invalid {
-    border-color: color.adjust($accent-color, $lightness: 10%);
-    &:focus {
-      box-shadow: 0 0 0 rem(2) color.adjust($accent-color, $lightness: 10%);
+    @include responsive($breakpoint-tablet) {
+      padding: rem(30);
     }
-  }
-}
-
-.callback-form__error-message {
-  color: $white;
-  font-size: rem(12);
-  padding: rem(4) rem(40) 0;
-  text-align: left;
-}
-
-.callback-form__visual {
-  display: flex;
-  align-items: center;
-
-  @include responsive($breakpoint-tablet) {
-    padding: 0 0 0 rem(20);
-  }
-  @include responsive($breakpoint-mobile) {
-    padding: 0;
+    @include responsive($breakpoint-mobile) {
+      padding: rem(20);
+    }
   }
 }
 </style>

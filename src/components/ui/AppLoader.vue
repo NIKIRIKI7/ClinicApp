@@ -1,7 +1,7 @@
-<!-- src/components/ui/AppLoader.vue -->
 <template>
   <div
       class="app-loader"
+      role="status"
       aria-label="Загрузка данных"
   >
     <div class="app-loader__spinner"></div>
@@ -16,9 +16,7 @@
 @use '@/assets/scss/abstracts/mixins' as *;
 
 .app-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   padding: rem(40);
 }
 

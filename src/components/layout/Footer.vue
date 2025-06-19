@@ -1,4 +1,3 @@
-<!-- src/components/layout/Footer.vue -->
 <script
     setup
     lang="ts"

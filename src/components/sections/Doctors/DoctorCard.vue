@@ -2,7 +2,7 @@
     setup
     lang="ts"
 >
-import type {IDoctor} from '@/stores/doctors';
+import type {IDoctor} from '@/types';
 
 defineProps<{
   doctor: IDoctor;

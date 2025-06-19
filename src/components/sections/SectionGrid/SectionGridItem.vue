@@ -3,7 +3,7 @@
     lang="ts"
 >
 import type {PropType} from 'vue';
-import type {SectionGridItemData} from '@/stores/sectionGrid';
+import type {SectionGridItemData} from '@/types';
 
 /**
  * @component SectionGridItem

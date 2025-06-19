@@ -1,4 +1,3 @@
-<!-- src/components/ui/Button.vue -->
 <script
     setup
     lang="ts"
@@ -6,7 +5,7 @@
 const props = defineProps({
   tag: {
     type: String,
-    default: 'button', // Изменено на 'button' как более безопасное значение по умолчанию
+    default: 'button',
   },
   href: {
     type: String,
@@ -19,7 +18,6 @@ const props = defineProps({
   variant: {
     type: String,
     default: 'primary',
-    // Валидатор для гарантии, что используются только поддерживаемые варианты
     validator: (value: string) => ['primary', 'secondary'].includes(value),
   },
 });
@@ -43,7 +41,6 @@ const props = defineProps({
 @use '../../assets/scss/abstracts/mixins' as *;
 @use 'sass:color';
 
-// Общие стили, не зависящие от варианта
 .base-button {
   display: inline-flex;
   align-items: center;
@@ -60,7 +57,6 @@ const props = defineProps({
   font-weight: $font-weight-semibold;
   font-size: rem($font-size-base);
 
-  // Общие стили для состояний
   &:active {
     transform: translateY(0);
   }
@@ -71,9 +67,6 @@ const props = defineProps({
   }
 }
 
-// --- Модификаторы ---
-
-// 1. Основной (розовый) стиль
 .base-button--primary {
   padding: rem(19px) rem(33px);
   border-radius: rem(100px);

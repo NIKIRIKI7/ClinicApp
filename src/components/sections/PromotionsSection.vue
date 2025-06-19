@@ -2,8 +2,11 @@
     setup
     lang="ts"
 >
+import {onMounted} from 'vue';
 import {storeToRefs} from 'pinia';
 import {usePromotionsStore} from '@/stores/promotions';
+import AppLoader from "@/components/ui/AppLoader.vue";
+import AppError from "@/components/ui/AppError.vue";
 
 /**
  * @component PromotionsSection
@@ -11,13 +14,25 @@ import {usePromotionsStore} from '@/stores/promotions';
  */
 
 const promotionsStore = usePromotionsStore();
-const {promotions} = storeToRefs(promotionsStore);
+const {items: promotions, isLoading, error} = storeToRefs(promotionsStore);
+
+onMounted(() => {
+  promotionsStore.fetchItems();
+});
 </script>
 
 <template>
   <section class="promotions">
     <div class="container">
-      <div class="promotions__content">
+      <AppLoader v-if="isLoading" />
+      <AppError
+          v-else-if="error"
+          :message="error"
+      />
+      <div
+          v-else-if="promotions && promotions.length > 0"
+          class="promotions__content"
+      >
         <ul class="promotions__list">
           <li
               v-for="promotion in promotions"
@@ -100,7 +115,7 @@ const {promotions} = storeToRefs(promotionsStore);
 }
 
 .promotion-card__image-wrapper {
-  aspect-ratio: 300 / 180; // Сохраняем пропорции изображения
+  aspect-ratio: 300 / 180;
   overflow: hidden;
 }
 

@@ -1,43 +1,5 @@
-import {defineStore} from 'pinia';
-import blobImage from '@/assets/images/blob.png';
+import {createContentStore} from './factories/createContentStore';
+import {fetchAdvantages} from '@/api/contentApi';
+import type {AdvantagesData} from '@/types';
 
-export interface AdvantagesData {
-  title: string;
-  blob: {
-    src: string;
-    alt: string;
-  };
-  items: {
-    id: number;
-    title: string;
-    description: string;
-  }[];
-}
-
-/**
- * @store useAdvantagesStore
- * @description Хранилище для данных секции "Наши преимущества".
- */
-export const useAdvantagesStore = defineStore('advantages', {
-  state: () => ({
-    advantages: {
-      title: 'Наши преимущества',
-      blob: {
-        src: blobImage,
-        alt: 'Декоративный фоновый элемент',
-      },
-      items: [
-        {
-          id: 1,
-          title: 'Команда профессионалов',
-          description: 'На сегодняшний момент в нашем штате более 100 специалистов, в том числе кандидаты медицинских наук и врачи с международными сертификатами: стоматологи-терапевты, пародонтологи, хирурги-имплантологи, гнатологи, стоматологи-ортопеды и ортодонты. Отделения нашей стоматологии располагают также собственной зуботехнической лабораторией, среди сотрудников которой 10 квалифицированных зубных техников.',
-        },
-        {
-          id: 2,
-          title: 'Передовые технологии и оборудование',
-          description: 'Высокотехнологичное оснащение отделений стоматологии позволяет выполнять качественную диагностику и стоматологические процедуры различного уровня сложности:<br>• компьютерные томографы Vatech и Galileos;<br>• микроскопы Leica;<br>• имплантологические системы ведущих мировых брендов;<br>• рентген-аппарат нового поколения;<br>• аппараты для профессионального отбеливания зубов ZOOM4, ZOOM3, Blanche Brillante;<br>• компьютерная анестезия;<br>• компьютерная диагностика тканей пародонта.',
-        },
-      ],
-    } as AdvantagesData,
-  }),
-});
+export const useAdvantagesStore = createContentStore<AdvantagesData>('advantages', fetchAdvantages);

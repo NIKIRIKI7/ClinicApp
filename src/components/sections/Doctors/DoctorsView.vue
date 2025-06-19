@@ -1,4 +1,3 @@
-<!-- views/DoctorsView.vue -->
 <script
     setup
     lang="ts"
@@ -6,13 +5,11 @@
 import {onMounted} from 'vue';
 import {useDoctorsStore} from '@/stores/doctors';
 import DoctorsSearch from '@/components/sections/Doctors/DoctorsSearch.vue';
-import DoctorsGrid from '@/components/sections/Doctors/DoctorsGrid.vue'; // Переименованный импорт
+import DoctorsGrid from '@/components/sections/Doctors/DoctorsGrid.vue';
 
 const doctorsStore = useDoctorsStore();
 
-// Инициализируем store при создании компонента
 onMounted(() => {
-  // Проверяем, чтобы не делать лишних запросов при возврате на страницу
   if (doctorsStore.doctors.length === 0) {
     doctorsStore.init();
   }

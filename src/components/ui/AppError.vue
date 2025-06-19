@@ -1,4 +1,3 @@
-<!-- src/components/ui/AppError.vue -->
 <script
     setup
     lang="ts"
