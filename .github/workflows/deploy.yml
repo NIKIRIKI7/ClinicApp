@@ -2,12 +2,10 @@
 
 name: Deploy Vue App to GitHub Pages
 
-# Запуск воркфлоу при пуше в ветку 'main'
 on:
   push:
     branches: [ main ]
 
-# Разрешения для токена, чтобы воркфлоу мог делать коммиты в репозиторий
 permissions:
   contents: read
   pages: write
@@ -26,15 +24,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Используем версию Node, указанную в tsconfig.node.json
+          node-version: '22' 
           cache: 'npm'
 
-      # 3. Установка зависимостей
       - name: Install dependencies
         run: npm install
 
       # 4. Сборка проекта
-      # Мы снова указываем --base, чтобы гарантировать правильность пути, даже если вы забыли его в vite.config.ts
       - name: Build
         run: npm run build -- --base=/ClinicApp/
 

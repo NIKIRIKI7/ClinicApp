@@ -17,7 +17,8 @@ const layoutStore = useLayoutStore();
       <div class="contacts__inner">
         <div class="contacts__info">
           <h2 class="contacts__title">КОНТАКТЫ</h2>
-          <address class="contacts__address">{{ layoutStore.address }}</address>
+          <!-- ИСПРАВЛЕНИЕ ЗДЕСЬ -->
+          <address class="contacts__address">{{ layoutStore.footer.address }}</address>
           <div class="contacts__phone-block">
             <a
                 :href="layoutStore.header.contacts.phone.href"
