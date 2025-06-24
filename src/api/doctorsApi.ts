@@ -9,21 +9,17 @@ import type {IDoctor, IDoctorsFilter, IDoctorsApiResponse} from '@/types';
  * @description Имитирует асинхронный запрос к API для получения списка врачей.
  */
 export const fetchDoctorsFromApi = (filters: IDoctorsFilter, page: number, limit: number): Promise<IDoctorsApiResponse> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const filtered = allDoctorsMock.filter(doctor => {
-        const nameMatch = doctor.name.toLowerCase().includes(filters.name.toLowerCase());
-        const specialtyMatch = filters.specialty ? doctor.specialties.includes(filters.specialty) : true;
-        const metroMatch = filters.metro ? doctor.metro === filters.metro : true;
-        return nameMatch && specialtyMatch && metroMatch;
-      });
-
-      const totalCount = filtered.length;
-      const paginatedData = filtered.slice((page - 1) * limit, page * limit);
-
-      resolve({data: paginatedData, totalCount});
-    }, 500);
+  const filtered = allDoctorsMock.filter(doctor => {
+    const nameMatch = doctor.name.toLowerCase().includes(filters.name.toLowerCase());
+    const specialtyMatch = filters.specialty ? doctor.specialties.includes(filters.specialty) : true;
+    const metroMatch = filters.metro ? doctor.metro === filters.metro : true;
+    return nameMatch && specialtyMatch && metroMatch;
   });
+
+  const totalCount = filtered.length;
+  const paginatedData = filtered.slice((page - 1) * limit, page * limit);
+
+  return Promise.resolve({data: paginatedData, totalCount});
 };
 
 /**
@@ -33,12 +29,8 @@ export const fetchInitialData = (): Promise<{
   specialties: string[],
   metroStations: string[]
 }> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        specialties: allSpecialtiesMock,
-        metroStations: metroStationsMock,
-      });
-    }, 200);
+  return Promise.resolve({
+    specialties: allSpecialtiesMock,
+    metroStations: metroStationsMock,
   });
 };

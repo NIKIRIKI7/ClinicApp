@@ -19,8 +19,13 @@ import type {
   IPricingItem,
 } from '@/types';
 
-const createApiFetcher = <T>(data: T, delay = 300): () => Promise<T> => {
-  return () => new Promise(resolve => setTimeout(() => resolve(data), delay));
+/**
+ * @description Создает функцию-обертку для имитации запроса к API.
+ * @param data - Моковые данные, которые должны быть возвращены.
+ * @returns Функция, возвращающая Promise с данными.
+ */
+const createApiFetcher = <T>(data: T): () => Promise<T> => {
+  return () => Promise.resolve(data);
 };
 
 export const fetchSectionGridItems = createApiFetcher<SectionGridItemData[]>(mockSectionGridItems);
@@ -29,5 +34,6 @@ export const fetchLicenses = createApiFetcher<License[]>(mockLicenses);
 export const fetchGalleryImages = createApiFetcher<GalleryImage[]>(mockGalleryImages);
 export const fetchAdvantages = createApiFetcher<AdvantagesData>(mockAdvantages);
 export const fetchHeroData = createApiFetcher<HeroData>(mockHeroData);
-export const fetchServices = createApiFetcher<IService[]>(servicesMock, 250);
-export const fetchPricingItems = createApiFetcher<IPricingItem[]>(mockPricingItems, 150);
+
+export const fetchServices = createApiFetcher<IService[]>(servicesMock);
+export const fetchPricingItems = createApiFetcher<IPricingItem[]>(mockPricingItems);
