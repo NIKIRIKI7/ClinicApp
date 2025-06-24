@@ -1,0 +1,59 @@
+# .github/workflows/deploy.yml
+
+name: Deploy Vue App to GitHub Pages
+
+# Запуск воркфлоу при пуше в ветку 'main'
+on:
+  push:
+    branches: [ main ]
+
+# Разрешения для токена, чтобы воркфлоу мог делать коммиты в репозиторий
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Получение кода из репозитория
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Установка Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # Используем версию Node, указанную в tsconfig.node.json
+          cache: 'npm'
+
+      # 3. Установка зависимостей
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Сборка проекта
+      # Мы снова указываем --base, чтобы гарантировать правильность пути, даже если вы забыли его в vite.config.ts
+      - name: Build
+        run: npm run build -- --base=/ClinicApp/
+
+      # 5. Копирование index.html в 404.html
+      # Это трюк для корректной работы роутинга в одностраничных приложениях (SPA) на GitHub Pages
+      - name: Prepare for SPA routing
+        run: cp dist/index.html dist/404.html
+
+      # 6. Настройка GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 7. Загрузка артефактов сборки
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      # 8. Деплой на GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

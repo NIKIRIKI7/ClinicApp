@@ -8,6 +8,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import {ViteImageOptimizer} from 'vite-plugin-image-optimizer'
 
 export default defineConfig({
+  base: '/ClinicApp',
   plugins: [
     vue(),
     svgLoader(),
