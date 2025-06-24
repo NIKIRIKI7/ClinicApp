@@ -1,4 +1,7 @@
-# Logs
+# Локальные зависимости
+node_modules/
+
+# Логи
 logs
 *.log
 npm-debug.log*
@@ -7,27 +10,36 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-.DS_Store
+# Артефакты сборки и кэш
 dist
 dist-ssr
-coverage
 *.local
+.vite/
+.nuxt/
+.vercel/
 
-/cypress/videos/
-/cypress/screenshots/
+# Кэш тестов и отчеты о покрытии
+.vitest/
+coverage/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
+# Временные файлы TypeScript
+.tmp/
 *.tsbuildinfo
 
-*.txt
+# Файлы IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Файлы окружения
+.env
+.env.*
+!.env.example
+
 *.bat
+*.txt
